@@ -1,6 +1,7 @@
 AUTHOR = 'Heikki Wilenius'
 SITENAME = 'Adhocism'
-SITEURL = ''
+SITEURL = 'http://adhocism.net'
+THEME = 'pelican-mediumfox'
 
 PATH = 'content'
 
