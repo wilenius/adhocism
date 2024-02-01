@@ -1,0 +1,41 @@
+baseURL: 'https://adhocism.net/'
+languageCode: 'en-gb'
+title: 'Adhocism'
+theme: 'papermod'
+
+params:
+    homeInfoParams:
+        Title: Adhocism
+        Content: Heikki's digital garden
+
+    socialIcons: # optional
+        - name: "mastodon"
+          url: "https://fediscience.org/@hw"
+        - name: "googlescholar"
+          url: "https://scholar.google.com/citations?user=tQnXP_MAAAAJ&hl=en"
+    author: "Heikki"
+
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON # is necessary
+
+menu:
+    main:
+        - identifier: categories
+          name: Categories
+          url: /categories/
+          weight: 10
+        - identifier: tags
+          name: Tags
+          url: /tags/
+          weight: 20
+        - identifier: search
+          name: Search
+          url: /search/
+          weight: 20
+        - identifier: archive
+          name: Archive
+          url: /archives/
+          weight: 20

@@ -6,6 +6,14 @@
     <description>Recent content in Categories on Adhocism</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
+    <lastBuildDate>Thu, 01 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://adhocism.net/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>fi</title>
+      <link>https://adhocism.net/categories/fi/</link>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/categories/fi/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
