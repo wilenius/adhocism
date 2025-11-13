@@ -3,12 +3,57 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://adhocism.net/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://adhocism.net/categories/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
+    <loc>https://adhocism.net/pages/</loc>
+    <lastmod>2025-11-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/pandoc/</loc>
+    <lastmod>2025-11-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/pandoc-lua-filters/</loc>
+    <lastmod>2025-11-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/</loc>
+    <lastmod>2025-11-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/digital-garden/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/digital-garden/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://adhocism.net/pages/en/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/en/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/fi/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/fi/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/id/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/id/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/jan-30th-2024/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/pages/meta/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/meta/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/tags/virkkaus/</loc>
+    <lastmod>2025-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://adhocism.net/categories/</loc>
     <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://adhocism.net/pages/feb-1st-2024/</loc>
@@ -17,22 +62,8 @@
     <loc>https://adhocism.net/categories/fi/</loc>
     <lastmod>2024-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://adhocism.net/pages/fi/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://adhocism.net/pages/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://adhocism.net/pages/jan-30th-2024/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://adhocism.net/pages/meta/</loc>
-    <lastmod>2024-02-01T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://adhocism.net/archives/</loc>
   </url><url>
     <loc>https://adhocism.net/search/</loc>
-  </url><url>
-    <loc>https://adhocism.net/tags/</loc>
   </url>
 </urlset>

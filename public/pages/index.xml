@@ -1,47 +1,86 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Pages on Adhocism</title>
     <link>https://adhocism.net/pages/</link>
     <description>Recent content in Pages on Adhocism</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo -- 0.150.0</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 01 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://adhocism.net/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pandoc lua filters</title>
+      <link>https://adhocism.net/pages/pandoc-lua-filters/</link>
+      <pubDate>Thu, 13 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/pandoc-lua-filters/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://codeberg.org/tarleb/querverweis&#34;&gt;https://codeberg.org/tarleb/querverweis&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;crossreferences for markdown documents&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/pandoc-ext/info&#34;&gt;https://github.com/pandoc-ext/info&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;collection of misc lua filters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/topics/pandoc-filter&#34;&gt;https://github.com/topics/pandoc-filter&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;github search for pandoc filters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/jez/pandoc-sidenote&#34;&gt;https://github.com/jez/pandoc-sidenote&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tufte-style sidenotes, to be used together with &lt;a href=&#34;https://edwardtufte.github.io/tufte-css/&#34;&gt;https://edwardtufte.github.io/tufte-css/&lt;/a&gt; or &lt;a href=&#34;https://github.com/jez/pandoc-markdown-css-theme&#34;&gt;https://github.com/jez/pandoc-markdown-css-theme&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>digital garden</title>
+      <link>https://adhocism.net/pages/digital-garden/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/digital-garden/</guid>
+      <description>&lt;p&gt;This is Heikki&amp;rsquo;s digital garden. Content in Finnish ( #&lt;a href=&#34;https://adhocism.net/pages/fi/&#34;&gt;fi&lt;/a&gt; ) and English ( #&lt;a href=&#34;https://adhocism.net/pages/en/&#34;&gt;en&lt;/a&gt; ), perhaps sometimes in Bahasa Indonesia ( #&lt;a href=&#34;https://adhocism.net/pages/id/&#34;&gt;id&lt;/a&gt; ) as well. #&lt;a href=&#34;https://adhocism.net/pages/meta/&#34;&gt;meta&lt;/a&gt; #&lt;a href=&#34;https://adhocism.net/pages/digital-garden/&#34;&gt;digital garden&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TODO: how to convert inline tags to links? Or use only page tags and categories?&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>en</title>
       <link>https://adhocism.net/pages/en/</link>
-      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
       <guid>https://adhocism.net/pages/en/</guid>
       <description></description>
+    </item>
+    <item>
+      <title>fi</title>
+      <link>https://adhocism.net/pages/fi/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/fi/</guid>
+      <description>&lt;p&gt;All pages that have content in Finnish&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>id</title>
+      <link>https://adhocism.net/pages/id/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/id/</guid>
+      <description>&lt;p&gt;Semua halaman yang memiliki konten dalam bahasa Indonesia.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Jan 30th, 2024</title>
+      <link>https://adhocism.net/pages/jan-30th-2024/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/jan-30th-2024/</guid>
+      <description>&lt;p&gt;Joustavat hihansuut: &lt;a href=&#34;https://mezzacraft.com/crochet-a-stretchy-rib-cuff/&#34;&gt;https://mezzacraft.com/crochet-a-stretchy-rib-cuff/&lt;/a&gt; #virkkaus #&lt;a href=&#34;https://adhocism.net/pages/fi/&#34;&gt;fi&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>meta</title>
+      <link>https://adhocism.net/pages/meta/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/meta/</guid>
+      <description>&lt;p&gt;This page discusses the organization of my #&lt;a href=&#34;https://adhocism.net/pages/digital-garden/&#34;&gt;digital garden&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Feb 1st, 2024</title>
       <link>https://adhocism.net/pages/feb-1st-2024/</link>
       <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://adhocism.net/pages/feb-1st-2024/</guid>
-      <description>This is Heikki&amp;rsquo;s digital garden. Content in Finnish ( #fi ) and English ( #en ), perhaps sometimes in Bahasa Indonesia ( #id ) as well. #meta #[[digital garden]]</description>
-    </item>
-    <item>
-      <title>fi</title>
-      <link>https://adhocism.net/pages/fi/</link>
-      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://adhocism.net/pages/fi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Jan 30th, 2024</title>
-      <link>https://adhocism.net/pages/jan-30th-2024/</link>
-      <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://adhocism.net/pages/jan-30th-2024/</guid>
-      <description>Joustavat hihansuut: https://mezzacraft.com/crochet-a-stretchy-rib-cuff/ #virkkaus #fi</description>
-    </item>
-    <item>
-      <title>meta</title>
-      <link>https://adhocism.net/pages/meta/</link>
-      <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://adhocism.net/pages/meta/</guid>
-      <description></description>
+      <description>&lt;p&gt;This is Heikki&amp;rsquo;s digital garden. Content in Finnish ( #fi ) and English ( #en ), perhaps sometimes in Bahasa Indonesia ( #id ) as well. #meta #[[digital garden]]&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Pandoc on Adhocism</title>
+    <link>https://adhocism.net/tags/pandoc/</link>
+    <description>Recent content in Pandoc on Adhocism</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Thu, 13 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://adhocism.net/tags/pandoc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pandoc lua filters</title>
+      <link>https://adhocism.net/pages/pandoc-lua-filters/</link>
+      <pubDate>Thu, 13 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/pandoc-lua-filters/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://codeberg.org/tarleb/querverweis&#34;&gt;https://codeberg.org/tarleb/querverweis&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;crossreferences for markdown documents&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/pandoc-ext/info&#34;&gt;https://github.com/pandoc-ext/info&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;collection of misc lua filters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/topics/pandoc-filter&#34;&gt;https://github.com/topics/pandoc-filter&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;github search for pandoc filters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/jez/pandoc-sidenote&#34;&gt;https://github.com/jez/pandoc-sidenote&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tufte-style sidenotes, to be used together with &lt;a href=&#34;https://edwardtufte.github.io/tufte-css/&#34;&gt;https://edwardtufte.github.io/tufte-css/&lt;/a&gt; or &lt;a href=&#34;https://github.com/jez/pandoc-markdown-css-theme&#34;&gt;https://github.com/jez/pandoc-markdown-css-theme&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

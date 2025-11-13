@@ -1,7 +1,7 @@
 ---
 title: en
-tags:
-categories:
-date: 2024-02-01
-lastMod: 2024-02-01
+tags: 
+categories: 
+date: 2025-08-25
+lastMod: 2025-08-25
 ---

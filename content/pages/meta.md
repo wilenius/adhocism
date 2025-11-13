@@ -1,8 +1,10 @@
 ---
 title: meta
-tags:
-categories:
-date: 2024-01-30
-lastMod: 2024-02-01
+tags: 
+- digital garden
+categories: 
+date: 2025-08-25
+lastMod: 2025-08-25
 ---
+This page discusses the organization of my #[digital garden]({{< ref "/pages/digital garden" >}})
 

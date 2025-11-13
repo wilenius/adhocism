@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>En on Adhocism</title>
+    <link>https://adhocism.net/tags/en/</link>
+    <description>Recent content in En on Adhocism</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 25 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://adhocism.net/tags/en/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>digital garden</title>
+      <link>https://adhocism.net/pages/digital-garden/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/digital-garden/</guid>
+      <description>&lt;p&gt;This is Heikki&amp;rsquo;s digital garden. Content in Finnish ( #&lt;a href=&#34;https://adhocism.net/pages/fi/&#34;&gt;fi&lt;/a&gt; ) and English ( #&lt;a href=&#34;https://adhocism.net/pages/en/&#34;&gt;en&lt;/a&gt; ), perhaps sometimes in Bahasa Indonesia ( #&lt;a href=&#34;https://adhocism.net/pages/id/&#34;&gt;id&lt;/a&gt; ) as well. #&lt;a href=&#34;https://adhocism.net/pages/meta/&#34;&gt;meta&lt;/a&gt; #&lt;a href=&#34;https://adhocism.net/pages/digital-garden/&#34;&gt;digital garden&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TODO: how to convert inline tags to links? Or use only page tags and categories?&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>
