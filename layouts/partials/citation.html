@@ -1,0 +1,23 @@
+{{- if (eq .Kind "page") }}
+{{- $lastModDate := .Lastmod }}
+{{- if not $lastModDate }}
+  {{- with (.Param "lastMod") }}
+    {{- $lastModDate = . }}
+  {{- end }}
+{{- end }}
+{{- $lastModYear := "" }}
+{{- $lastModFormatted := "" }}
+{{- if $lastModDate }}
+  {{- $lastModYear = printf "[%d]" ($lastModDate | time.Format "2006" | int) }}
+  {{- $lastModFormatted = $lastModDate | time.Format "2006-01-02" }}
+{{- else if .Date }}
+  {{- $lastModYear = printf "[%d]" (.Date.Year) }}
+  {{- $lastModFormatted = .Date.Format "2006-01-02" }}
+{{- end }}
+<div class="citation-block">
+    <p class="citation-text">
+        <strong>Cite this page as:</strong>
+        Wilenius, Heikki {{ $lastModYear }}. {{ .Title }}. <em>Adhocism</em>. Last updated {{ $lastModFormatted }}. Accessed {{ now.Format "2006-01-02" }}. <a href="{{ .Permalink }}" rel="nofollow">{{ .Permalink }}</a>.
+    </p>
+</div>
+{{- end }}

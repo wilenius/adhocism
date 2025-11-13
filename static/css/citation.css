@@ -1,0 +1,22 @@
+.citation-block {
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+.citation-text {
+    font-size: 0.9em;
+    color: var(--secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.citation-text a {
+    color: inherit;
+    border-bottom: 1px solid var(--secondary);
+    text-decoration: none;
+}
+
+.citation-text a:hover {
+    border-bottom: 1px solid var(--primary);
+    color: var(--primary);
+}
