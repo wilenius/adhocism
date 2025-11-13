@@ -13,7 +13,7 @@ params:
           url: "https://fediscience.org/@hw"
         - name: "googlescholar"
           url: "https://scholar.google.com/citations?user=tQnXP_MAAAAJ&hl=en"
-    author: "Heikki"
+    author: "Heikki Wilenius"
 
 outputs:
     home:
