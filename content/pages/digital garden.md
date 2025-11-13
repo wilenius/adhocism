@@ -1,15 +1,14 @@
 ---
 title: digital garden
-tags:
+tags: 
 - fi
 - en
 - id
 - meta
 - digital garden
-categories:
+categories: 
 date: 2025-08-25
 lastMod: 2025-08-25
-hidden: true
 ---
 This is Heikki's digital garden. Content in Finnish ( #[fi]({{< ref "/pages/fi" >}}) ) and English ( #[en]({{< ref "/pages/en" >}}) ), perhaps sometimes in Bahasa Indonesia ( #[id]({{< ref "/pages/id" >}}) ) as well. #[meta]({{< ref "/pages/meta" >}}) #[digital garden]({{< ref "/pages/digital garden" >}})
 

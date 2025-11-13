@@ -1,10 +1,16 @@
 # Tag Descriptions Sync Workflow
 
-This document explains how to update tag descriptions after exporting from LogSeq.
+This document explains how to sync your LogSeq export to your Hugo site.
 
 ## Overview
 
-Tag descriptions are stored in `/content/tag-descriptions/` and automatically added to tag pages. When you export new content from LogSeq, the `sync-exports.sh` script synchronizes tag descriptions from the export.
+The `sync-exports.sh` script handles the complete synchronization from LogSeq export to your Hugo site:
+
+1. **Copies pages** - All exported markdown files from LogSeq go to `/content/pages/`
+2. **Copies assets** - All images and other assets go to `/static/logseq-assets/`
+3. **Syncs tag descriptions** - Extracts content from tag pages and creates/updates `/content/tag-descriptions/` files with `hidden: true` frontmatter
+
+This ensures your site stays up-to-date with your latest LogSeq content.
 
 ## Workflow
 
@@ -19,7 +25,7 @@ node index.mjs hw-logseq -o ./my-export -a -v
 
 This exports all pages to `./my-export/pages/`.
 
-### Step 2: Sync Tag Descriptions
+### Step 2: Sync Export to Site
 
 In the `adhocism` repository, run the sync script:
 
@@ -29,15 +35,22 @@ cd ~/git/adhocism
 ```
 
 The script will:
-- Read pages from `~/git/logseq-to-markdown/my-export/pages/`
+- Copy all pages from `~/git/logseq-to-markdown/my-export/pages/` to `./content/pages/`
+- Copy all assets from `~/git/logseq-to-markdown/my-export/assets/` to `./static/logseq-assets/`
 - Extract content for known tag pages (meta, en, fi, id, digital-garden)
-- Create/update files in `./content/tag-descriptions/`
-- Add `hidden: true` frontmatter to prevent them from appearing in page listings
+- Create/update files in `./content/tag-descriptions/` with `hidden: true` frontmatter
 
 Example output:
 ```
 Syncing from: /home/user/git/logseq-to-markdown/my-export
-Tag descriptions: ./content/tag-descriptions
+
+Copying pages to ./content/pages/
+  [pages copied...]
+
+Copying assets to ./static/logseq-assets/
+  [assets copied...]
+
+Syncing tag descriptions to ./content/tag-descriptions...
   ✓ meta.md → meta.md
   ✓ en.md → en.md
   ✓ fi.md → fi.md
@@ -63,19 +76,30 @@ hugo --cleanDestinationDir
 
 ## What Gets Synced
 
-The script syncs the following tag descriptions:
+### Pages
+All markdown files from the export are copied to `content/pages/`. This includes:
+- Your regular content pages (Jan 30th, 2024, Pandoc lua filters, etc.)
+- Tag description pages (meta, en, fi, id, digital-garden)
+
+### Assets
+All images and other assets from the export are copied to `static/logseq-assets/` and can be referenced in your markdown files.
+
+### Tag Descriptions
+The script automatically extracts tag description content and creates hidden pages:
 - `meta` - organization of the digital garden
 - `en` - pages with English content
 - `fi` - pages with Finnish content
 - `id` - pages with Indonesian content
 - `digital-garden` - the digital garden itself
 
-These correspond to the files in `content/tag-descriptions/`:
+These become files in `content/tag-descriptions/`:
 - `meta.md`
 - `en.md`
 - `fi.md`
 - `id.md`
 - `digital-garden.md`
+
+These files have `hidden: true` in their frontmatter so they don't appear in page listings, but their content is displayed on the corresponding tag pages.
 
 ## Modifying Tag Descriptions
 

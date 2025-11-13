@@ -6,7 +6,7 @@
     <description>Recent content in Fi on Adhocism</description>
     <generator>Hugo -- 0.150.0</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 25 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://adhocism.net/tags/fi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>digital garden</title>
@@ -24,6 +24,16 @@
       <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
       <guid>https://adhocism.net/pages/jan-30th-2024/</guid>
       <description>&lt;p&gt;Joustavat hihansuut: &lt;a href=&#34;https://mezzacraft.com/crochet-a-stretchy-rib-cuff/&#34;&gt;https://mezzacraft.com/crochet-a-stretchy-rib-cuff/&lt;/a&gt; #virkkaus #&lt;a href=&#34;https://adhocism.net/pages/fi/&#34;&gt;fi&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My digital garden</title>
+      <link>https://adhocism.net/pages/my-digital-garden/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://adhocism.net/pages/my-digital-garden/</guid>
+      <description>&lt;p&gt;This is Heikki&amp;rsquo;s digital garden. Content in Finnish ( #&lt;a href=&#34;https://adhocism.net/pages/fi/&#34;&gt;fi&lt;/a&gt; ) and English ( #&lt;a href=&#34;https://adhocism.net/pages/en/&#34;&gt;en&lt;/a&gt; ), perhaps sometimes in Bahasa Indonesia ( #&lt;a href=&#34;https://adhocism.net/pages/id/&#34;&gt;id&lt;/a&gt; ) as well. #&lt;a href=&#34;https://adhocism.net/pages/meta/&#34;&gt;meta&lt;/a&gt; #digital garden&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TODO: how to convert inline tags to links? Or use only page tags and categories?&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
   </channel>
 </rss>
