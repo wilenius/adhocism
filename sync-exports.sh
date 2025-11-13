@@ -66,12 +66,13 @@ for tag in "${TAG_PAGES[@]}"; do
     source_file="$PAGES_DIR/$filename"
     slug=$(echo "$tag" | tr '_' '-')
     target_file="$TAG_DESC_DIR/$slug.md"
+    pages_file="$CONTENT_PAGES_DIR/$filename"
 
     # Extract content (everything after frontmatter)
     # Using sed to skip the first --- and second --- (frontmatter markers)
     content=$(sed '1,/^---$/d; /^---$/d' "$source_file")
 
-    # Create new file with hidden frontmatter
+    # Create new file with hidden frontmatter in tag-descriptions
     cat > "$target_file" << EOF
 ---
 title: $tag
@@ -80,7 +81,20 @@ hidden: true
 $content
 EOF
 
-    echo "  ✓ $filename → $slug.md"
+    # Also add hidden: true to the copy in content/pages/ so it doesn't appear in listings
+    # Extract frontmatter from source file
+    frontmatter=$(sed -n '2,/^---$/p' "$source_file" | sed '$d')
+
+    # Create pages file with hidden: true added
+    cat > "$pages_file" << EOF
+---
+$frontmatter
+hidden: true
+---
+$content
+EOF
+
+    echo "  ✓ $filename → $slug.md (tag-descriptions) and hidden in pages"
     ((synced++))
 done
 
