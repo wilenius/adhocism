@@ -6,14 +6,21 @@ theme: 'PaperMod'
 params:
     homeInfoParams:
         Title: Adhocism
-        Content: Heikki's digital garden
-
     socialIcons: # optional
         - name: "mastodon"
           url: "https://fediscience.org/@hw"
         - name: "googlescholar"
           url: "https://scholar.google.com/citations?user=tQnXP_MAAAAJ&hl=en"
     author: "Heikki Wilenius"
+    mainSections:
+        - pages
+    # Pages to hide from the listing but keep as content
+    hiddenPages:
+        - front_page
+        - en
+        - fi
+        - id
+        - My digital garden
 
 outputs:
     home:
@@ -21,20 +28,26 @@ outputs:
         - RSS
         - JSON # is necessary
 
+taxonomies: {}
+
 menu:
     main:
-        - identifier: categories
-          name: Categories
-          url: /categories/
-          weight: 10
-        - identifier: tags
-          name: Tags
-          url: /tags/
-          weight: 20
+        - identifier: en
+          name: en
+          url: /pages/en/
+          weight: 5
+        - identifier: fi
+          name: fi
+          url: /pages/fi/
+          weight: 6
+        - identifier: id
+          name: id
+          url: /pages/id/
+          weight: 7
         - identifier: search
           name: Search
           url: /search/
-          weight: 20
+          weight: 10
         - identifier: archive
           name: Archive
           url: /archives/

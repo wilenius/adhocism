@@ -20,3 +20,41 @@
     border-bottom: 1px solid var(--primary);
     color: var(--primary);
 }
+
+/* Backlinks */
+.backlinks {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid var(--border);
+}
+
+.backlinks h3 {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+}
+
+.backlinks ul {
+    list-style: none;
+    padding: 0;
+}
+
+.backlinks li {
+    margin-bottom: 1em;
+}
+
+.backlinks li a {
+    font-weight: 600;
+}
+
+.backlink-excerpt {
+    font-size: 0.85em;
+    color: var(--secondary);
+    margin: 0.2em 0 0 0;
+    line-height: 1.5;
+}
+
+.no-backlinks {
+    font-size: 0.9em;
+    color: var(--secondary);
+    font-style: italic;
+}

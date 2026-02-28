@@ -1,31 +1,61 @@
-{{ $re := $.File.BaseFileName }} {{ $backlinks := slice }} {{ range where
-.Site.RegularPages "Type" "page" }} {{ if and (findRE $re .RawContent) (not (eq
-$re .File.BaseFileName)) }} {{ $backlinks = $backlinks | append . }} {{ end }}
-{{ end }} {{ if gt (len $backlinks) 0 }}
-<aside>
-  <h3>Backlinks</h3>
-  <div class="backlinks">
-    <ul>
-      {{ range $backlinks }}
-      <li class="capitalize"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-      {{ end }}
-    </ul>
-  </div>
-</aside>
-{{ else }}
-<aside>
-  <h4>No notes link to this note</h4>
-</aside>
-{{ end }}
+{{- $currentTitle := .Title -}}
+{{- $currentFile := "" -}}
+{{- with .File }}{{ $currentFile = .BaseFileName }}{{ end -}}
+{{- $backlinks := slice -}}
 
-<aside class="related">
-  {{ $related := .Site.RegularPages.Related . | complement $backlinks | first 3
-  -}} {{ with $related -}}
-  <h3>slightly related</h3>
+{{- range where .Site.RegularPages "Type" "pages" -}}
+  {{- if eq .Title $currentTitle -}}
+    {{- continue -}}
+  {{- end -}}
+
+  {{- $linked := false -}}
+
+  {{/* Check 1: page has current page's title in its front matter tags */}}
+  {{- range .Params.tags -}}
+    {{- if eq (. | lower) ($currentTitle | lower) -}}
+      {{- $linked = true -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{/* Check 2: inline #[title](ref) or #title mention in raw content */}}
+  {{- if not $linked -}}
+    {{- $patterns := slice -}}
+    {{/* Match #[Title](...) hugo ref links */}}
+    {{- $patterns = $patterns | append (printf `#\[%s\]` $currentTitle) -}}
+    {{/* Match #Title as a standalone hashtag (case-insensitive not available, try exact) */}}
+    {{- $patterns = $patterns | append (printf `#%s` $currentTitle) -}}
+    {{/* Also match by filename for [[page]] style refs */}}
+    {{- if $currentFile -}}
+      {{- $patterns = $patterns | append $currentFile -}}
+    {{- end -}}
+    {{- range $patterns -}}
+      {{- if findRE . $.RawContent -}}
+        {{- $linked = true -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $linked -}}
+    {{- $backlinks = $backlinks | append . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $backlinks) 0 }}
+<aside class="backlinks">
+  <h3>Linked references</h3>
   <ul>
-    {{ range . -}}
-    <li class="capitalize"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-    {{ end -}}
+    {{- range $backlinks }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{- if .Summary }}
+      <p class="backlink-excerpt">{{ .Summary | plainify | truncate 150 }}</p>
+      {{- end }}
+    </li>
+    {{- end }}
   </ul>
-  {{ end -}}
 </aside>
+{{- else }}
+<aside class="backlinks">
+  <p class="no-backlinks">No pages link here yet.</p>
+</aside>
+{{- end }}

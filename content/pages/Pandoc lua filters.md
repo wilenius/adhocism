@@ -1,5 +1,5 @@
 ---
-title: Pandoc lua filters
+title: "Pandoc lua filters"
 tags: 
 - pandoc
 categories: 

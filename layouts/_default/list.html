@@ -22,20 +22,7 @@
     {{- end }}
     {{- end }}
   </h1>
-  {{- if eq .Kind "term" }}
-  {{- /* For term pages, look up tag description */ -}}
-  {{- $slugName := anchorize .Title }}
-  {{- $tagDesc := site.GetPage (printf "tag-descriptions/%s" $slugName) }}
-  {{- if $tagDesc }}
-  <div class="post-description">
-    {{ $tagDesc.Content }}
-  </div>
-  {{- else if .Description }}
-  <div class="post-description">
-    {{ .Description | markdownify }}
-  </div>
-  {{- end }}
-  {{- else if .Description }}
+  {{- if .Description }}
   <div class="post-description">
     {{ .Description | markdownify }}
   </div>
@@ -55,7 +42,18 @@
 
 {{- if .IsHome }}
 {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
-{{- $pages = where $pages "Params.hidden" "!=" "true"  }}
+{{- $pages = where $pages "Params.hidden" "!=" "true" }}
+{{- $hiddenPages := site.Params.hiddenPages | default slice }}
+{{- $filtered := slice }}
+{{- range $pages }}
+  {{- $title := .Title }}
+  {{- $hide := false }}
+  {{- range $hiddenPages }}
+    {{- if eq (. | lower) ($title | lower) }}{{ $hide = true }}{{ end }}
+  {{- end }}
+  {{- if not $hide }}{{ $filtered = $filtered | append . }}{{ end }}
+{{- end }}
+{{- $pages = $filtered }}
 {{- else if eq .Kind "section" }}
 {{- /* Filter out pages marked as hidden */ -}}
 {{- $pages = where .RegularPages "Params.hidden" "!=" "true"  }}
@@ -63,21 +61,21 @@
 
 {{- $paginator := .Paginate $pages }}
 
-{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
+{{- if and .IsHome (eq $paginator.PageNumber 1) }}
+{{- if site.Params.homeInfoParams }}
 {{- partial "home_info.html" . }}
 {{- end }}
+{{- with site.GetPage "/pages/My digital garden" }}
+<div class="post-content home-intro">
+  <h2>{{ .Title }}</h2>
+  {{ .Content }}
+</div>
+{{- end }}
+{{- end }}
 
-{{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
-
-{{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
-{{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
-{{- $class = "first-entry" }}
-{{- else if $term }}
-{{- $class = "post-entry tag-entry" }}
-{{- end }}
 
 <article class="{{ $class }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
