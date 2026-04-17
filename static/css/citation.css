@@ -29,21 +29,25 @@
 }
 
 .backlinks h3 {
-    font-size: 1.1em;
+    font-size: 0.9em;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--secondary);
     margin-bottom: 0.5em;
 }
 
 .backlinks ul {
-    list-style: none;
-    padding: 0;
+    list-style: disc;
+    padding-left: 1.5em;
 }
 
 .backlinks li {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 .backlinks li a {
-    font-weight: 600;
+    font-weight: normal;
+    font-size: 0.9em;
 }
 
 .backlink-excerpt {

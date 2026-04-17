@@ -4,9 +4,7 @@ title: 'Adhocism'
 theme: 'PaperMod'
 
 params:
-    homeInfoParams:
-        Title: Adhocism
-    socialIcons: # optional
+    socialIcons:
         - name: "mastodon"
           url: "https://fediscience.org/@hw"
         - name: "googlescholar"
@@ -27,6 +25,16 @@ outputs:
         - HTML
         - RSS
         - JSON # is necessary
+
+frontmatter:
+    date:
+        - lastMod
+        - date
+
+markup:
+    goldmark:
+        extensions:
+            footnote: true
 
 taxonomies: {}
 

@@ -62,9 +62,6 @@
 {{- $paginator := .Paginate $pages }}
 
 {{- if and .IsHome (eq $paginator.PageNumber 1) }}
-{{- if site.Params.homeInfoParams }}
-{{- partial "home_info.html" . }}
-{{- end }}
 {{- with site.GetPage "/pages/My digital garden" }}
 <div class="post-content home-intro">
   <h2>{{ .Title }}</h2>
@@ -73,6 +70,7 @@
 {{- end }}
 {{- end }}
 
+<div class="posts-grid">
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
@@ -95,7 +93,7 @@
   </header>
   {{- if (ne (.Param "hideSummary") true) }}
   <div class="entry-content">
-    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    {{ .Summary }}{{ if .Truncated }}...{{ end }}
   </div>
   {{- end }}
   {{- if not (.Param "hideMeta") }}
@@ -106,6 +104,7 @@
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
+</div>
 
 {{- if gt $paginator.TotalPages 1 }}
 <footer class="page-footer">

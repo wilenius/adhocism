@@ -1,0 +1,250 @@
+/* ET Book font */
+@font-face {
+    font-family: "et-book";
+    src: url("/fonts/et-book-roman-line-figures.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "et-book";
+    src: url("/fonts/et-book-display-italic-old-style-figures.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "et-book";
+    src: url("/fonts/et-book-bold-line-figures.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Override PaperMod fonts with ET Book */
+body {
+    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD",
+        "Book Antiqua", Georgia, serif;
+}
+
+/* Widen PaperMod's main container to make room for the margin */
+:root {
+    --main-width: 1100px;
+}
+
+/* Tufte-style layout: content area with right margin for notes */
+.post-content {
+    position: relative;
+    max-width: 600px;
+}
+
+/* Typography refinements */
+.post-content p,
+.post-content li,
+.post-content blockquote p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.post-content h1 {
+    font-weight: 400;
+    font-style: italic;
+}
+
+.post-content h2 {
+    font-weight: 400;
+    font-style: italic;
+}
+
+.post-content h3 {
+    font-weight: 400;
+    font-style: italic;
+}
+
+.post-content blockquote {
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+/* Sidenote and margin note shared styles */
+.sidenote,
+.marginnote {
+    float: right;
+    clear: right;
+    margin-right: -55%;
+    width: 45%;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    vertical-align: baseline;
+    position: relative;
+}
+
+/* Override paragraph styles inside sidenotes */
+.sidenote p,
+.marginnote p {
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    display: inline;
+}
+
+/* Sidenote numbering */
+.sidenote-number {
+    counter-increment: sidenote-counter;
+}
+
+.sidenote-number:after,
+.sidenote:before {
+    font-size: 0.75rem;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.sidenote-number:after {
+    content: counter(sidenote-counter);
+    top: -0.5rem;
+    left: 0.1rem;
+}
+
+.sidenote:before {
+    content: counter(sidenote-counter) " ";
+    top: -0.5rem;
+}
+
+/* Counter reset on each article */
+article {
+    counter-reset: sidenote-counter;
+}
+
+/* Margin toggle (hidden checkbox for mobile) */
+input.margin-toggle {
+    display: none;
+}
+
+label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
+
+/* Clear floats before backlinks/citation/footer so margin notes
+   push the HR down if they extend beyond the content */
+.backlinks,
+.citation-block {
+    clear: both;
+}
+
+/* --- Homepage layout --- */
+
+/* Social icons in header */
+.logo-switches .social-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+}
+
+.logo-switches .social-icons a {
+    padding: 4px;
+}
+
+.logo-switches .social-icons a svg {
+    height: 20px;
+    width: 20px;
+}
+
+/* Reduce spacing on homepage intro */
+.home-intro {
+    margin-top: 0;
+    margin-bottom: var(--gap);
+    max-width: 100%;
+}
+
+/* Posts grid layout */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+}
+
+.posts-grid .post-entry {
+    margin-bottom: 0;
+}
+
+/* Preview card summary: hide interactive elements, keep superscripts */
+.post-entry .entry-content a {
+    pointer-events: none;
+    color: inherit;
+    text-decoration: none;
+}
+
+.post-entry .entry-content .sidenote,
+.post-entry .entry-content .marginnote,
+.post-entry .entry-content input.margin-toggle {
+    display: none;
+}
+
+.post-entry .entry-content label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
+
+.post-entry .entry-content .footnote-ref {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+@media (max-width: 1024px) {
+    .posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive: narrow screens */
+@media (max-width: 760px) {
+    :root {
+        --main-width: 720px;
+    }
+
+    .post-content {
+        max-width: 100%;
+    }
+
+    label.margin-toggle:not(.sidenote-number) {
+        display: inline;
+        cursor: pointer;
+        color: var(--secondary);
+    }
+
+    .sidenote,
+    .marginnote {
+        display: none;
+    }
+
+    .margin-toggle:checked + .sidenote,
+    .margin-toggle:checked + .marginnote {
+        display: block;
+        float: left;
+        left: 1rem;
+        clear: both;
+        width: 95%;
+        margin: 1rem 2.5%;
+        vertical-align: baseline;
+        position: relative;
+        padding: 0.5rem 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidenote p,
+    .marginnote p {
+        display: block;
+    }
+}

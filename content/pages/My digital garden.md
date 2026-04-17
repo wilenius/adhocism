@@ -1,30 +1,20 @@
 ---
 title: "My digital garden"
 tags: 
-- fi
 - en
+- fi
 - id
 - meta
 - digital garden
 categories: 
 date: 2025-08-25
-lastMod: 2026-02-28
+lastMod: 2026-03-04
 ---
-This is Heikki's digital garden. Content in Finnish ( #[fi]({{< ref "/pages/fi" >}}) ) and English ( #[en]({{< ref "/pages/en" >}}) ), perhaps sometimes in Bahasa Indonesia ( #[id]({{< ref "/pages/id" >}}) ) as well. #[meta]({{< ref "/pages/meta" >}}) #digital garden
+This is a [digital garden](https://joelhooks.com/digital-garden), collection of resources and writings by [Heikki](https://www.iki.fi/hw/). Everything is licensed under CC BY-NC 4.0. Citation information can be found on every page.
 
-Stuff to implement:
+Content is mainly in English (#[en]({{< ref "/pages/en" >}})), but some of it in Finnish (#[fi]({{< ref "/pages/fi" >}})) and perhaps sometimes in Bahasa Indonesia (#[id]({{< ref "/pages/id" >}})) as well. #[meta]({{< ref "/pages/meta" >}}) #digital garden
 
-+ backlinks? --> DONE
+You can [subscribe to an RSS feed](https://adhocism.net/index.xml) of new pages and new edits.
 
-+ TODO block references?
-
-+ TODO handle dates properly for journal entries?
-
-+ TODO public blocks within private pages?
-
-+ TODO DOIs for selected pages with Zenodo, automate updating with a Hugo plugin & Zenodo API
-
-+ TODO sidenotes
-
-+ TODO support for [RSL](https://github.com/rslstandard/rsl)
+If you wish to comment on anything, link the page and mention [me](https://fediscience.org/@hw) in the Fediverse.
 

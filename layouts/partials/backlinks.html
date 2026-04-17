@@ -19,9 +19,11 @@
 
   {{/* Check 2: inline #[title](ref) or #title mention in raw content */}}
   {{- if not $linked -}}
+    {{- $rawContent := .RawContent -}}
     {{- $patterns := slice -}}
-    {{/* Match #[Title](...) hugo ref links */}}
+    {{/* Match #[Title](...) and [Title]({{< ref ... >}}) hugo ref links */}}
     {{- $patterns = $patterns | append (printf `#\[%s\]` $currentTitle) -}}
+    {{- $patterns = $patterns | append (printf `\[%s\]\(` $currentTitle) -}}
     {{/* Match #Title as a standalone hashtag (case-insensitive not available, try exact) */}}
     {{- $patterns = $patterns | append (printf `#%s` $currentTitle) -}}
     {{/* Also match by filename for [[page]] style refs */}}
@@ -29,7 +31,7 @@
       {{- $patterns = $patterns | append $currentFile -}}
     {{- end -}}
     {{- range $patterns -}}
-      {{- if findRE . $.RawContent -}}
+      {{- if findRE . $rawContent -}}
         {{- $linked = true -}}
       {{- end -}}
     {{- end -}}
