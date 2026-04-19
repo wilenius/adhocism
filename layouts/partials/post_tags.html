@@ -1,0 +1,37 @@
+{{/*
+  Renders tag pills for a page.
+  Params:
+    .page     — the Hugo page
+    .limit    — 0 = all tags; N = show only first N
+*/}}
+{{- $page := .page }}
+{{- $limit := .limit | default 0 }}
+
+{{/* Collect frontmatter tags, filtering out empty strings (YAML comment artefacts) */}}
+{{- $rawTags := $page.Params.tags | default slice }}
+{{- $tags := slice }}
+{{- range $rawTags }}
+  {{- if . }}{{- $tags = $tags | append . }}{{- end }}
+{{- end }}
+
+{{/* Fallback: first inline #hashtag from raw content when no property tags */}}
+{{- if and (eq (len $tags) 0) (gt $limit 0) }}
+  {{- $found := findRE `#([A-Za-z][A-Za-z0-9_]*)` $page.RawContent 1 }}
+  {{- if $found }}
+    {{- $tags = slice (strings.TrimPrefix "#" (index $found 0)) }}
+  {{- end }}
+{{- end }}
+
+{{/* Trim to limit */}}
+{{- if and (gt $limit 0) (gt (len $tags) $limit) }}
+  {{- $tags = first $limit $tags }}
+{{- end }}
+
+{{- if $tags }}
+<span class="tag-pills">
+  {{- range $tags }}
+  {{- $colorIndex := mod (index (sha256 .) 0) 8 }}
+  <span class="tag-pill tag-color-{{ $colorIndex }}">{{ . }}</span>
+  {{- end }}
+</span>
+{{- end }}

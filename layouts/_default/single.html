@@ -26,6 +26,9 @@
       {{- partial "edit_post.html" . -}}
       {{- partial "post_canonical.html" . -}}
     </div>
+    {{- with (partial "post_tags.html" (dict "page" . "limit" 0)) }}
+    <div class="post-meta-tags">{{ . }}</div>
+    {{- end }}
     {{- end }}
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}

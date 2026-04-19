@@ -1,0 +1,62 @@
+/* ─── Tag pills ─────────────────────────────────────────────────────────── */
+
+.tag-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    /* override any z-index so pills don't eat the entry-link overlay */
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    line-height: 1.7;
+    font-family: inherit;
+}
+
+/*
+  Earthy palette — 8 colours, one per hash bucket.
+  Light-mode: soft warm backgrounds, dark earthy text.
+*/
+.tag-color-0 { background: #e2c09e; color: #6b3319; } /* terracotta    */
+.tag-color-1 { background: #c2d5b8; color: #344f2d; } /* sage          */
+.tag-color-2 { background: #e6d49a; color: #624d18; } /* ochre         */
+.tag-color-3 { background: #d6ab8a; color: #572c15; } /* sienna        */
+.tag-color-4 { background: #b6c8a0; color: #29502e; } /* moss          */
+.tag-color-5 { background: #e8c96a; color: #644c0e; } /* amber         */
+.tag-color-6 { background: #d8bbb0; color: #573425; } /* clay / dusty  */
+.tag-color-7 { background: #b6cada; color: #274a5a; } /* slate / teal  */
+
+/* Dark mode — slightly richer, still earthy */
+[data-theme="dark"] .tag-color-0 { background: #7a3c22; color: #f0d5c0; }
+[data-theme="dark"] .tag-color-1 { background: #344e2a; color: #cde0c0; }
+[data-theme="dark"] .tag-color-2 { background: #5e4916; color: #f0e0a8; }
+[data-theme="dark"] .tag-color-3 { background: #5c2f18; color: #e8c8a8; }
+[data-theme="dark"] .tag-color-4 { background: #284e2e; color: #c8deb8; }
+[data-theme="dark"] .tag-color-5 { background: #5e4610; color: #f0daa0; }
+[data-theme="dark"] .tag-color-6 { background: #523224; color: #e0ccc4; }
+[data-theme="dark"] .tag-color-7 { background: #224458; color: #b8d4e4; }
+
+/* ─── Card footer: date + pill on same row ──────────────────────────────── */
+
+.entry-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ─── Post header: date line + pills below ──────────────────────────────── */
+
+.post-meta-tags {
+    margin-top: 6px;
+}
