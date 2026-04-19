@@ -15,14 +15,14 @@
 {{- end }}
 
 {{/* Fallback: first inline #hashtag from raw content when no property tags */}}
-{{- if and (eq (len $tags) 0) (gt $limit 0) }}
+{{- if eq (len $tags) 0 }}
   {{- $found := findRE `#([A-Za-z][A-Za-z0-9_]*)` $page.RawContent 1 }}
   {{- if $found }}
     {{- $tags = slice (strings.TrimPrefix "#" (index $found 0)) }}
   {{- end }}
 {{- end }}
 
-{{/* Trim to limit */}}
+{{/* Trim to limit when limit > 0 */}}
 {{- if and (gt $limit 0) (gt (len $tags) $limit) }}
   {{- $tags = first $limit $tags }}
 {{- end }}
