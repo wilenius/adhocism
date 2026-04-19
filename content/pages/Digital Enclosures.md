@@ -1,9 +1,13 @@
 ---
 title: "Digital Enclosures"
 tags: 
+- anthropology
+- frontier
+- technology
+- economy
 categories: 
 date: 2025-11-21
-lastMod: 2025-12-01
+lastMod: 2026-04-19
 ---
 Also known as: vendor lock-in.
 
