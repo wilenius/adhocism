@@ -3,8 +3,8 @@ title: "meta"
 tags: 
 - digital garden
 categories: 
-date: 2024-09-12
-lastMod: 2024-09-12
+date: 2025-08-25
+lastMod: 2025-11-13
 ---
-This page discusses the organization of this #[digital garden]({{< ref "/pages/digital garden" >}}) and the associated partially public knowledge database
+This page discusses the organization of this #digital garden and the associated partially public knowledge database
 

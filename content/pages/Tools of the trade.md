@@ -1,12 +1,9 @@
 ---
 title: "Tools of the trade"
 tags: 
-- anthropology
-- technology
-- research
 categories: 
-date: 2025-11-21
-lastMod: 2026-04-19
+date: 2025-12-17
+lastMod: 2026-03-04
 ---
 Here's a list of software I use in my research, and a brief description of how and why.
 
