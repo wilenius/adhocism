@@ -2,8 +2,8 @@
 title: "Digital Enclosures"
 tags: 
 categories: 
-date: 2025-12-17
-lastMod: 2026-03-04
+date: 2025-11-21
+lastMod: 2025-12-01
 ---
 Also known as: vendor lock-in.
 
