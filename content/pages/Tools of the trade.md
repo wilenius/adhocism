@@ -6,7 +6,7 @@ tags:
 - research
 categories: 
 date: 2025-12-17
-lastMod: 2026-03-04
+lastMod: 2026-04-22
 ---
 Here's a list of software I use in my research, and a brief description of how and why.
 
@@ -33,6 +33,19 @@ Here's a list of software I use in my research, and a brief description of how a
 *NeoVim*[^neovim] for writing and programming
 
 + The amount of design thinking that has gone into how vim-like software work is mindblowing.[note: [Two-Bit History](https://twobithistory.org/2018/08/05/where-vim-came-from.html) has written about the history of vim. NeoVim represents the accumulated knowledge and thinking from half a century.] Nothing else, in my opinion, comes even close. The negative side of that is the learning curve. That can somewhat be mitigated by using the [LazyVim setup](https://www.lazyvim.org/), and by reading [LazyVim for Ambitious Developers](https://lazyvim-ambitious-devs.phillips.codes/).
+
+Pandoc[^pandoc] for document conversion
+
++ Pandoc converts almost any document to another format. I write all my academic outputs in markdown[note: markdown is a markup languge for creating formatted (aka 'rich') text.], and then convert it to that I need. Some examples:
+
+	+ markdown to reveal.js HTML for slides
+
+	+ markdown to DOCX for sharing with colleagues
+
+	+ markdown to PDF for printing
+
+	+ markdown to EPUB for loading on a ebook reader
+[^pandoc]: [https://pandoc.org/](https://pandoc.org/)
 [^zotero]: [https://zotero.org](https://zotero.org)
 [^logseq]: [https://logseq.com/](https://logseq.com/)
 [^neovim]: [https://neovim.io/](https://neovim.io/)
