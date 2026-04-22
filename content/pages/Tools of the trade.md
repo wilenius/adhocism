@@ -1,6 +1,9 @@
 ---
 title: "Tools of the trade"
 tags: 
+- anthropology
+- technology
+- research
 categories: 
 date: 2025-12-17
 lastMod: 2026-03-04
