@@ -26,17 +26,18 @@ fi
 echo "Syncing from: $EXPORT_DIR"
 echo ""
 
-# Copy pages
-echo "Copying pages to $CONTENT_PAGES_DIR..."
+# Sync pages (mirror: deletes pages removed/renamed in Logseq)
+echo "Syncing pages to $CONTENT_PAGES_DIR..."
 mkdir -p "$CONTENT_PAGES_DIR"
-cp -v "$PAGES_DIR"/*.md "$CONTENT_PAGES_DIR/" 2>&1 | sed 's/^/  /'
+rsync -av --delete --include='*.md' --exclude='*' \
+    "$PAGES_DIR"/ "$CONTENT_PAGES_DIR"/ 2>&1 | sed 's/^/  /'
 echo ""
 
-# Copy assets if they exist
+# Sync assets if they exist (mirror: deletes orphaned assets)
 if [ -d "$ASSETS_DIR" ]; then
-    echo "Copying assets to $STATIC_ASSETS_DIR..."
+    echo "Syncing assets to $STATIC_ASSETS_DIR..."
     mkdir -p "$STATIC_ASSETS_DIR"
-    cp -rv "$ASSETS_DIR"/* "$STATIC_ASSETS_DIR/" 2>&1 | sed 's/^/  /'
+    rsync -av --delete "$ASSETS_DIR"/ "$STATIC_ASSETS_DIR"/ 2>&1 | sed 's/^/  /'
     echo ""
 fi
 
