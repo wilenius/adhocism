@@ -36,7 +36,7 @@ Here's a list of software I use in my research, and a brief description of how a
 
 Pandoc[^pandoc] for document conversion
 
-+ Pandoc converts almost any document to another format. I write all my academic outputs in markdown[note: markdown is a markup languge for creating formatted (aka 'rich') text.], and then convert it to that I need. Some examples:
++ Pandoc converts almost any document to another format. I write all my academic outputs in markdown[note: Markdown is a markup languge for creating formatted (aka 'rich') text.], and then convert it to that I need. Some examples:
 
 	+ markdown to reveal.js HTML for slides
 
