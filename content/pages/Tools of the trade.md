@@ -4,9 +4,10 @@ tags:
 - anthropology
 - technology
 - research
+- DOI
 categories: 
 date: 2025-12-17
-lastMod: 2026-04-22
+lastMod: 2026-05-07
 ---
 Here's a list of software I use in my research, and a brief description of how and why.
 

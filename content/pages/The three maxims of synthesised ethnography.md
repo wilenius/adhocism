@@ -9,6 +9,7 @@ tags:
 categories: 
 date: 2026-04-16
 lastMod: 2026-05-07
+abstract: "Argues for sustainable GenAI use in ethnographic practice."
 ---
 ## 1. Whenever possible, use open models. If not possible, appropriate the capabilities of the proprietary model by training your model with it.
 
