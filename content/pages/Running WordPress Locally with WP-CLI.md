@@ -33,8 +33,6 @@ Running WordPress Locally with WP-CLI
 
 	+ Drag the `.sql` file into the terminal to paste its full path instead of typing it
 
-	+ 💡 **Don't use Adminer for large dumps** (>100 MB) — PHP memory limit will choke. WP-CLI handles them fine.
-
 + ## Fix URLs After Import
 
 	+ The dump contains the production domain; you need to search-replace it:
@@ -73,5 +71,5 @@ Running WordPress Locally with WP-CLI
 
 	+ `DISALLOW_FILE_EDIT already defined` warning → harmless, ignore it
 
-	+ Large dumps fail in Adminer → use WP-CLI instead
+	+ Large dumps fail in Adminer or phpMyAdmin→ use WP-CLI instead
 
