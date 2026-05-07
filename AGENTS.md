@@ -35,3 +35,23 @@ pages and blocks. Do not change it.
 
 `just`, `hugo` (extended), `node`, plus a local clone of `logseq-to-markdown`
 with its dependencies installed (`npm install` in that repo).
+
+## Tufte sidenotes: duplicated implementation
+
+The site renders Tufte-style sidenotes (numbered, from Hugo footnotes) and
+margin notes (from inline `[note: ...]` syntax) two different ways:
+
+- **Live site:** `static/js/tufte.js` runs in the browser and rewrites the
+  DOM at page load.
+- **Zenodo export (HTML + PDF):** `scripts/tufte_transform.py` performs the
+  same rewrite server-side, because WeasyPrint doesn't run JavaScript and
+  Zenodo's HTML preview can't fetch `/js/tufte.js`.
+
+If you change the note conventions (the `[note: ...]` syntax, the markup
+emitted for sidenotes/margin notes, class names, counter behaviour, etc.)
+you must update **both** files or the live site and the Zenodo artifacts
+will drift apart.
+
+The long-term fix is to move the transform into a Hugo render hook so
+there is a single source of truth — that would let us delete `tufte.js`
+and `tufte_transform.py` together. Until then, treat them as a pair.

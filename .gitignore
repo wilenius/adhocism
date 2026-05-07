@@ -11,3 +11,6 @@
 # OS
 .DS_Store
 Thumbs.db
+
+# Zenodo sandbox state — sandbox DOIs are throwaway, only prod state is committed
+/data/zenodo-sandbox.yml

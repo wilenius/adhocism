@@ -1,0 +1,17 @@
+pages:
+  The three maxims of synthesised ethnography:
+    concept_doi: 10.5281/zenodo.20070979
+    concept_recid: '20070979'
+    content_hash: 90e52e8cd7d9fe4887151c2e31f3c694d6f41fa825e751d4d497c0ddca76cc69
+    latest_doi: 10.5281/zenodo.20070980
+    latest_recid: 20070980
+    published_at: true
+    title: The three maxims of synthesised ethnography
+  Tools of the trade:
+    concept_doi: 10.5281/zenodo.20070983
+    concept_recid: '20070983'
+    content_hash: 8b6247426d82715d7c872931cf7e68d3193fdaae8e3bdaff360e78dee404f2ca
+    latest_doi: 10.5281/zenodo.20070984
+    latest_recid: 20070984
+    published_at: true
+    title: Tools of the trade

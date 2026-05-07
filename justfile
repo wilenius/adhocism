@@ -41,3 +41,38 @@ publish: import build
         git commit -m "publish: sync logseq export ($(date -I))"; \
         git push; \
     fi
+
+# Render one page to PDF (under /tmp) for iterating on scripts/print.css.
+# Usage: just preview-pdf "The three maxims of synthesised ethnography"
+preview-pdf STEM:
+    uv run scripts/zenodo_export.py --preview-pdf {{quote(STEM)}}
+
+# Render the upload-ready HTML (transformed + stylesheets inlined) under /tmp.
+# Open the resulting file in a browser to see what Zenodo will preview.
+# Usage: just preview-html "Tools of the trade"
+preview-html STEM:
+    uv run scripts/zenodo_export.py --preview-html {{quote(STEM)}}
+
+# Zenodo: dry-run on sandbox (no API calls, no Hugo build)
+zenodo-dry-sandbox:
+    uv run scripts/zenodo_export.py --sandbox --dry-run
+
+# Zenodo: publish new tagged pages to sandbox
+zenodo-sandbox:
+    uv run scripts/zenodo_export.py --sandbox
+
+# Zenodo: publish new versions of changed tagged pages on sandbox
+zenodo-update-sandbox:
+    uv run scripts/zenodo_export.py --sandbox --update
+
+# Zenodo: dry-run on production
+zenodo-dry:
+    uv run scripts/zenodo_export.py --dry-run
+
+# Zenodo: publish new tagged pages to production
+zenodo:
+    uv run scripts/zenodo_export.py
+
+# Zenodo: publish new versions of changed tagged pages on production
+zenodo-update:
+    uv run scripts/zenodo_export.py --update
