@@ -45,8 +45,8 @@ Pandoc[^pandoc] for document conversion
 	+ markdown to PDF for printing
 
 	+ markdown to EPUB for loading on a ebook reader
-[^pandoc]: [https://pandoc.org/](https://pandoc.org/)
-[^zotero]: [https://zotero.org](https://zotero.org)
-[^logseq]: [https://logseq.com/](https://logseq.com/)
-[^neovim]: [https://neovim.io/](https://neovim.io/)
+	  [^pandoc]: [https://pandoc.org/](https://pandoc.org/)
+	  [^zotero]: [https://zotero.org](https://zotero.org)
+	  [^logseq]: [https://logseq.com/](https://logseq.com/)
+	  [^neovim]: [https://neovim.io/](https://neovim.io/)
 

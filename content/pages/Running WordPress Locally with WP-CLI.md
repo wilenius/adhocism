@@ -22,14 +22,14 @@ Running WordPress Locally with WP-CLI
 	+ **Reset the database first** (fresh installs already have tables):
 
 		+ ```
-wp db reset --yes
-```
+		  wp db reset --yes
+		  ```
 
 	+ Then import:
 
 		+ ```
-wp db import /path/to/your-dump.sql
-```
+		  wp db import /path/to/your-dump.sql
+		  ```
 
 	+ Drag the `.sql` file into the terminal to paste its full path instead of typing it
 
@@ -40,24 +40,24 @@ wp db import /path/to/your-dump.sql
 	+ The dump contains the production domain; you need to search-replace it:
 
 		+ ```
-wp search-replace 'https://old-domain.com' 'http://yoursite.local' --all-tables
-```
+		  wp search-replace 'https://old-domain.com' 'http://yoursite.local' --all-tables
+		  ```
 
 	+ `--all-tables` catches serialised data in custom tables
 
 	+ Then force the core options:
 
 		+ ```
-wp option update siteurl 'http://yoursite.local'
-wp option update home 'http://yoursite.local'
-```
+		  wp option update siteurl 'http://yoursite.local'
+		  wp option update home 'http://yoursite.local'
+		  ```
 
 	+ Verify:
 
 		+ ```
-wp option get siteurl
-wp option get home
-```
+		  wp option get siteurl
+		  wp option get home
+		  ```
 
 + ## Still Redirecting to Production?
 
