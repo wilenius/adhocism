@@ -123,17 +123,15 @@ figure {
     background: #fff !important;
 }
 
-/* Sidenotes/margin notes float into the gutter to the right of the
-   narrowed .post-content. The 45%/-55% percentages are of .post-content,
-   so the geometry mirrors the live site (where .post-content is 600px). */
+/* Print: pull sidenotes and margin notes out of inline flow into
+   bottom-of-page footnotes via CSS GCPM. WeasyPrint can't paginate a
+   float-into-gutter sidenote that straddles a page break (the
+   continuation page loses the first line and the number prefix), so
+   for PDF we trade the side-margin layout for reliable footnotes.
+   The HTML upload still uses the Tufte float layout via tufte.css. */
 .sidenote,
 .marginnote {
-    float: right;
-    clear: right;
-    width: 45%;
-    margin-right: -55%;
-    margin-top: 0.3em;
-    margin-bottom: 0.6em;
+    float: footnote;
     font-size: 7pt;
     line-height: 1.4;
 }
@@ -146,29 +144,41 @@ figure {
     line-height: inherit;
 }
 
-/* Sidenote number prefix: tufte.css gives it font-size: 0.75rem (~9pt),
-   too big against the 7pt print body. Match the body size and sit on
-   the baseline (kill the rem-based top shift). */
-.sidenote:before {
-    font-size: inherit !important;
-    top: 0 !important;
-    left: 0 !important;
+.sidenote::footnote-call,
+.marginnote::footnote-call {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 1;
 }
 
-/* Keep the in-body sidenote-number label as a small superscript in em
-   units, so it scales with the surrounding paragraph instead of the
-   root font-size. */
-.sidenote-number:after {
-    font-size: 0.75em !important;
-    top: -0.4em !important;
+.sidenote::footnote-marker,
+.marginnote::footnote-marker {
+    font-size: 7pt;
 }
 
-/* Avoid splitting a single sidenote across pages where possible — keeps
-   numbering consistent and prevents the "missing first line" continuation
-   glitch from biting smaller notes. */
-.sidenote,
-.marginnote {
-    break-inside: avoid;
+@page {
+    @footnote {
+        border-top: 1px solid #999;
+        padding-top: 4pt;
+        margin-top: 1em;
+    }
+}
+
+/* The in-body label/checkbox triplet that the transform emits is for
+   the HTML mobile toggle; in print, ::footnote-call provides the
+   marker, so hide the originals. */
+.margin-toggle,
+.sidenote-number {
+    display: none !important;
+}
+
+/* tufte.css prepends a counter(sidenote-counter) via .sidenote:before.
+   In print the counter never increments (the .sidenote-number that
+   carries counter-increment is hidden) and ::footnote-marker provides
+   the number anyway, so suppress the leading "0" pseudo-element. */
+.sidenote::before,
+.sidenote-number::after {
+    content: none !important;
 }
 
 /* Footnotes from Hugo render as <div class=footnotes><ol><li><p>...</p></li>
