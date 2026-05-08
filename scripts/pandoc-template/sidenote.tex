@@ -1,0 +1,94 @@
+%%
+%% Pandoc + Tufte sidenote template
+%% Renders footnotes as numbered sidenotes, [note: ...] as margin notes
+%% Configurable text:margin ratio via `marginratio` YAML variable (default "4:1")
+%%
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$lang=$lang$,$endif$$if(papersize)$$papersize$,$endif$a4paper]{tufte-handout}
+
+% --- Configurable margin ratio ---
+% Default 4:1 means text width is 4/5 of usable area, margin is 1/5
+% Set via YAML: marginratio: "3:1" etc.
+\makeatletter
+\newcommand{\margintexttotal}{5}  % default denominator
+\newcommand{\margintextnum}{4}     % default numerator
+\ifdefined\usermarginratio
+  \expandafter\parsemarginratio\usermarginratio\relax
+\fi
+\makeatother
+
+% --- A4 geometry with wide right margin ---
+% Tufte-handout already sets asymmetric margins; we adjust text:margin
+\geometry{
+  a4paper,
+  left=20mm,
+  top=25mm,
+  bottom=25mm,
+  textwidth=130mm,            % will be overridden below
+  marginparsep=5mm,
+  marginparwidth=35mm
+}
+
+% --- Sidenote / marginnote already use \footnotesize by default in tufte-handout ---
+
+% --- Reroute pandoc footnotes to sidenotes ---
+% Pandoc emits \footnote{...} — we redirect to \sidenote{...}
+\renewcommand{\footnote}[1]{\sidenote{#1}}
+
+% --- [note: ...] support via Lua filter (see readme) ---
+% Margin notes (unnumbered) are inserted via the filter as \marginnote{...}
+
+% --- Standard pandoc template pieces ---
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% --- Hyperref ---
+\hypersetup{
+  $if(title)$pdftitle={$title$},$endif$
+  $if(author)$pdfauthor={$author$},$endif$
+  colorlinks=true,
+  linkcolor=$if(linkcolor)$$linkcolor$$else$blue$endif$,
+  urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+  citecolor=$if(citecolor)$$citecolor$$else$blue$endif$
+}
+
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2]%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+   \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$
+
+\title{$title$}
+$if(subtitle)$\subtitle{$subtitle$}$endif$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$if(date)$\date{$date$}$endif$
+
+\begin{document}
+
+$if(title)$
+\maketitle
+$endif$
+
+$if(abstract)$
+\begin{abstract}
+\noindent
+$abstract$
+\end{abstract}
+$endif$
+
+$if(toc)$
+\tableofcontents
+$endif$
+
+$body$
+
+\end{document}

@@ -42,7 +42,7 @@ publish: import build
         git push; \
     fi
 
-# Render one page to PDF (under /tmp) for iterating on scripts/print.css.
+# Render one page to PDF (under /tmp) using pandoc with Tufte-style sidenotes.
 # Usage: just preview-pdf "The three maxims of synthesised ethnography"
 preview-pdf STEM:
     uv run scripts/zenodo_export.py --preview-pdf {{quote(STEM)}}

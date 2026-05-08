@@ -5,7 +5,6 @@
 #   "requests>=2.31",
 #   "python-frontmatter>=1.0",
 #   "PyYAML>=6.0",
-#   "weasyprint>=62",
 # ]
 # ///
 """Upload Hugo pages tagged 'DOI' to Zenodo.
@@ -53,7 +52,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 PAGES_DIR = REPO_ROOT / "content" / "pages"
 PUBLIC_DIR = REPO_ROOT / "public"
 DATA_DIR = REPO_ROOT / "data"
-PRINT_CSS = REPO_ROOT / "scripts" / "print.css"
+PANDOC_TEMPLATE_DIR = REPO_ROOT / "scripts" / "pandoc-template"
 
 DOI_TAG = "DOI"
 CREATORS = [{"name": "Wilenius, Heikki", "orcid": "0000-0003-4601-2392"}]
@@ -284,8 +283,8 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--preview-pdf", metavar="STEM",
                     help="Render the PDF for one page (markdown filename stem, e.g. "
                          "'The three maxims of synthesised ethnography') to "
-                         "/tmp/<slug>.pdf and exit. No Zenodo calls. Assumes "
-                         "`hugo` has already produced public/.")
+                         "/tmp/<slug>.pdf and exit. No Zenodo calls. Uses pandoc "
+                         "with Tufte-style sidenote template.")
     ap.add_argument("--preview-html", metavar="STEM",
                     help="Write the upload-ready HTML for one page (transform "
                          "applied, stylesheets inlined) to /tmp/<slug>.html and "
@@ -294,45 +293,85 @@ def parse_args() -> argparse.Namespace:
     return ap.parse_args()
 
 
-def render_pdf(html_str: str, base_url: Path) -> bytes:
-    """Render HTML (with site CSS already inlined) to a print-styled PDF.
+def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
+    """Render markdown to PDF using pandoc with Tufte-style sidenote template.
 
-    Imported lazily so dry-runs and metadata-only flows don't pay the cost.
-
-    print.css is injected as an inline <style> block (author-origin, last in
-    the cascade) rather than passed via weasyprint's stylesheets= argument,
-    which loads CSS as user-origin and loses to the site's author CSS at
-    equal specificity.
+    Uses the sidenote.tex template which converts footnotes to margin sidenotes.
     """
-    from weasyprint import HTML
+    template_path = PANDOC_TEMPLATE_DIR / "sidenote.tex"
+    filter_path = PANDOC_TEMPLATE_DIR / "note-filter.lua"
 
-    if PRINT_CSS.exists():
-        style_tag = f"<style>\n{PRINT_CSS.read_text(encoding='utf-8')}\n</style>"
-        if "</head>" in html_str:
-            html_str = html_str.replace("</head>", style_tag + "</head>", 1)
-        else:
-            html_str = style_tag + html_str
+    if not template_path.exists():
+        sys.exit(f"Pandoc template not found: {template_path}")
 
-    pdf = HTML(string=html_str, base_url=str(base_url)).write_pdf()
-    assert pdf is not None  # only None when target= is passed; we don't.
-    return pdf
+    # Build YAML header for pandoc from frontmatter
+    title = post.get("title", md_path.stem)
+    abstract = post.get("abstract", "")
+    date = to_iso_date(post.get("lastMod") or post.get("date")) or dt.date.today().isoformat()
+
+    yaml_header = f"---\ntitle: {json.dumps(title)}\n"
+    if abstract:
+        yaml_header += f"abstract: {json.dumps(str(abstract).strip())}\n"
+    yaml_header += f"date: {date}\n---\n\n"
+
+    # Combine header + body
+    full_markdown = yaml_header + post.content
+
+    # Write to temp file for pandoc
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False, encoding="utf-8") as tmp:
+        tmp.write(full_markdown)
+        tmp_path = tmp.name
+
+    try:
+        # Run pandoc
+        cmd = [
+            "pandoc",
+            tmp_path,
+            "--template=" + str(template_path),
+        ]
+        if filter_path.exists():
+            cmd.append("--lua-filter=" + str(filter_path))
+        cmd.extend([
+            "--pdf-engine=xelatex",
+            "-o", "-",  # output to stdout
+        ])
+
+        result = subprocess.run(cmd, capture_output=True)
+        if result.returncode != 0:
+            sys.exit(f"Pandoc failed: {result.stderr.decode('utf-8')}")
+
+        return result.stdout
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
 
 
-def render_uploaded_artifacts(html_path: Path) -> tuple[bytes, bytes]:
-    """Return (html_bytes, pdf_bytes) for upload to a single Zenodo deposition."""
+def render_uploaded_artifacts(md_path: Path, post: frontmatter.Post) -> tuple[bytes, bytes]:
+    """Return (html_bytes, pdf_bytes) for upload to a single Zenodo deposition.
+
+    HTML: Hugo-rendered page with tufte transform applied and styles inlined.
+    PDF: Pandoc-rendered from markdown using Tufte-style sidenote template.
+    """
+    # HTML artifact (from Hugo build)
+    html_path = html_path_for(md_path)
     if not html_path.exists():
         sys.exit(f"Rendered HTML not found: {html_path}. Did Hugo build correctly?")
     html_str = transform_tufte_notes(html_path.read_text(encoding="utf-8"))
     html_str = inline_stylesheets(html_str, PUBLIC_DIR)
-    return html_str.encode("utf-8"), render_pdf(html_str, PUBLIC_DIR)
+    html_bytes = html_str.encode("utf-8")
+
+    # PDF artifact (from markdown via pandoc)
+    pdf_bytes = render_pdf_from_markdown(md_path, post)
+
+    return html_bytes, pdf_bytes
 
 
 def preview_pdf(stem: str) -> None:
     md = PAGES_DIR / f"{stem}.md"
     if not md.exists():
         sys.exit(f"No markdown file at {md}")
-    html_path = html_path_for(md)
-    _, pdf_bytes = render_uploaded_artifacts(html_path)
+    post = frontmatter.load(md)
+    pdf_bytes = render_pdf_from_markdown(md, post)
     out = Path("/tmp") / f"{slugify(stem)}.pdf"
     out.write_bytes(pdf_bytes)
     print(f"Wrote {out} ({len(pdf_bytes):,} bytes)")
@@ -342,8 +381,8 @@ def preview_html(stem: str) -> None:
     md = PAGES_DIR / f"{stem}.md"
     if not md.exists():
         sys.exit(f"No markdown file at {md}")
-    html_path = html_path_for(md)
-    html_bytes, _ = render_uploaded_artifacts(html_path)
+    post = frontmatter.load(md)
+    html_bytes, _ = render_uploaded_artifacts(md, post)
     out = Path("/tmp") / f"{slugify(stem)}.html"
     out.write_bytes(html_bytes)
     print(f"Wrote {out} ({len(html_bytes):,} bytes)")
@@ -401,7 +440,6 @@ def main() -> None:
         meta = build_metadata(post, body, fallback_title=md.stem)
         upload_name = safe_filename(meta["title"])
         pdf_upload_name = safe_filename(meta["title"], ext="pdf")
-        html_path = html_path_for(md)
 
         if action == "create":
             print(f"[create]  {label}")
@@ -425,7 +463,7 @@ def main() -> None:
             save_state(sp, state)
             print(f"          Reserved: {version_doi} (concept: {concept_doi}); rebuilding to embed.")
             hugo_build()
-            html_bytes, pdf_bytes = render_uploaded_artifacts(html_path)
+            html_bytes, pdf_bytes = render_uploaded_artifacts(md, post)
             upload_bytes(dep["links"]["bucket"], html_bytes, upload_name, token)
             upload_bytes(dep["links"]["bucket"], pdf_bytes, pdf_upload_name, token)
             published = publish_deposition(base, token, version_recid)
@@ -454,7 +492,7 @@ def main() -> None:
             hugo_build()
             replace_files(base, token, version_recid)
             update_metadata(base, token, version_recid, meta)
-            html_bytes, pdf_bytes = render_uploaded_artifacts(html_path)
+            html_bytes, pdf_bytes = render_uploaded_artifacts(md, post)
             upload_bytes(draft["links"]["bucket"], html_bytes, upload_name, token)
             upload_bytes(draft["links"]["bucket"], pdf_bytes, pdf_upload_name, token)
             published = publish_deposition(base, token, version_recid)
