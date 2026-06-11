@@ -33,6 +33,8 @@ Running WordPress Locally with WP-CLI
 
 	+ Drag the `.sql` file into the terminal to paste its full path instead of typing it
 
+	+ 💡 **Don't use Adminer for large dumps** (>100 MB) — PHP memory limit will choke. WP-CLI handles them fine.
+
 + ## Fix URLs After Import
 
 	+ The dump contains the production domain; you need to search-replace it:
@@ -67,7 +69,7 @@ Running WordPress Locally with WP-CLI
 
 + ## Common Gotchas
 
-	+ `Table already exists` error → you forgot `wp db reset --yes` first
+	+ `Table already exists` error → old database, you forgot `wp db reset --yes` first
 
 	+ `DISALLOW_FILE_EDIT already defined` warning → harmless, ignore it
 
