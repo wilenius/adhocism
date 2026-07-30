@@ -27,9 +27,7 @@
   {{- end }}
 </header>
 
-{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-{{- /* Filter out hidden pages */ -}}
-{{- $pages = where $pages "Params.hidden" "!=" "true"  }}
+{{- $pages := partialCached "listed_pages.html" . }}
 
 {{- if site.Params.ShowAllPagesInArchive }}
 {{- $pages = site.RegularPages }}

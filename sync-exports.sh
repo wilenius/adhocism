@@ -41,4 +41,10 @@ if [ -d "$ASSETS_DIR" ]; then
     echo ""
 fi
 
+# Regenerate tag pages. Must run after the rsync above: content/pages is
+# mirrored with --delete, so tag pages live in content/tags instead.
+echo "Generating tag pages..."
+uv run "$(dirname "$0")/scripts/generate_tag_pages.py" 2>&1 | sed 's/^/  /'
+echo ""
+
 echo "Sync complete."

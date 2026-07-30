@@ -17,9 +17,13 @@ default:
 export:
     cd {{logseq_dir}} && node index.mjs {{graph}} -o ./my-export -d -v -t
 
-# Copy exported pages and assets into this Hugo site
+# Copy exported pages and assets into this Hugo site, then regenerate tag pages
 sync:
     ./sync-exports.sh {{logseq_dir}}/my-export
+
+# Regenerate content/tags from the tags used in content/pages (part of `sync`)
+tags:
+    uv run scripts/generate_tag_pages.py
 
 # Pull fresh content from Logseq (export + sync)
 import: export sync
@@ -34,7 +38,7 @@ preview:
 
 # Full flow: import, validate build, commit content changes, push.
 publish: import build
-    git add content/pages static/logseq-assets
+    git add content/pages content/tags static/logseq-assets
     @if git diff --cached --quiet; then \
         echo "no content changes — nothing to commit"; \
     else \

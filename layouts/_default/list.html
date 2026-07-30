@@ -41,19 +41,7 @@
 {{- $pages := union .RegularPages .Sections }}
 
 {{- if .IsHome }}
-{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
-{{- $pages = where $pages "Params.hidden" "!=" "true" }}
-{{- $hiddenPages := site.Params.hiddenPages | default slice }}
-{{- $filtered := slice }}
-{{- range $pages }}
-  {{- $title := .Title }}
-  {{- $hide := false }}
-  {{- range $hiddenPages }}
-    {{- if eq (. | lower) ($title | lower) }}{{ $hide = true }}{{ end }}
-  {{- end }}
-  {{- if not $hide }}{{ $filtered = $filtered | append . }}{{ end }}
-{{- end }}
-{{- $pages = $filtered }}
+{{- $pages = partialCached "listed_pages.html" . }}
 {{- else if eq .Kind "section" }}
 {{- /* Filter out pages marked as hidden */ -}}
 {{- $pages = where .RegularPages "Params.hidden" "!=" "true"  }}

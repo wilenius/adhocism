@@ -1,0 +1,41 @@
+{{- define "main" }}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+</header>
+
+{{- if .Content }}
+<div class="post-content">{{ .Content }}</div>
+{{- end }}
+
+{{- /* Count tag use across the content pages, then render one pill per tag.
+       The filter matches post_tags.html and generate_tag_pages.py. */ -}}
+{{- $valid := `^[\p{L}\p{N}][\p{L}\p{N} &'’/+._-]*$` }}
+{{- $counts := dict }}
+{{- $labels := dict }}
+{{- range where site.RegularPages "Section" "pages" }}
+  {{- range .Params.tags }}
+    {{- if and . (findRE $valid .) }}
+      {{- $key := . | lower }}
+      {{- $counts = merge $counts (dict $key (add (int (index $counts $key)) 1)) }}
+      {{- $labels = merge $labels (dict $key .) }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $index := partialCached "tag_index.html" . }}
+
+<div class="tag-cloud">
+  {{- range $key, $count := $counts }}
+  {{- $label := index $labels $key }}
+  {{- $colorIndex := mod (index (sha256 $label) 0) 8 }}
+  {{- $href := index $index $key }}
+  {{- if $href }}
+  <a class="tag-pill tag-color-{{ $colorIndex }}" href="{{ $href }}">{{ $label }}<span class="tag-count">{{ $count }}</span></a>
+  {{- else }}
+  <span class="tag-pill tag-color-{{ $colorIndex }}">{{ $label }}<span class="tag-count">{{ $count }}</span></span>
+  {{- end }}
+  {{- end }}
+</div>
+
+{{- end }}{{- /* end main */ -}}

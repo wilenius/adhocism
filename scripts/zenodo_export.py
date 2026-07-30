@@ -293,6 +293,41 @@ def parse_args() -> argparse.Namespace:
     return ap.parse_args()
 
 
+def _compute_layout_widths(post: frontmatter.Post) -> tuple[int, int]:
+    """Return (textwidth_mm, marginwidth_mm) so sidenotes and main text fill the same pages.
+
+    Strategy: the optimal ratio of column widths equals the ratio of their rendered
+    content lengths. We estimate rendered length from character count, applying a URL
+    penalty (URLs are unbreakable so they cost extra lines in a narrow margin).
+    Widths are clamped so the text column stays readable and the margin stays usable.
+    """
+    import re
+
+    content = post.content
+    fn_pattern = re.compile(
+        r"^\s{0,3}\[\^[^\]]+\]:(.*?)(?=^\s{0,3}\[\^|\Z)",
+        re.MULTILINE | re.DOTALL,
+    )
+    fn_text = "".join(fn_pattern.findall(content))
+    fn_chars = len(fn_text.strip())
+    main_chars = len(fn_pattern.sub("", content).strip())
+
+    if fn_chars == 0 or main_chars == 0:
+        return 130, 35
+
+    url_count = len(re.findall(r"https?://", fn_text))
+    fn_effective = fn_chars * (1.0 + 0.05 * url_count)
+
+    # textwidth / marginwidth = main_chars / fn_effective
+    ratio = main_chars / fn_effective
+    available = 165  # A4 210mm - left 20mm - right 20mm - sep 5mm
+    textwidth = int(available * ratio / (ratio + 1))
+    # 90mm lower bound: narrower columns cause section-heading lowercasing errors.
+    textwidth = max(90, min(140, textwidth))
+    marginwidth = available - textwidth
+    return textwidth, marginwidth
+
+
 def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
     """Render markdown to PDF using pandoc with Tufte-style sidenote template.
 
@@ -308,23 +343,30 @@ def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
     title = post.get("title", md_path.stem)
     abstract = post.get("abstract", "")
     date = to_iso_date(post.get("lastMod") or post.get("date")) or dt.date.today().isoformat()
+    authors = post.get("authors") or ["Heikki Wilenius"]
+    textwidth_mm, marginwidth_mm = _compute_layout_widths(post)
 
     yaml_header = f"---\ntitle: {json.dumps(title)}\n"
+    yaml_header += f"author: {json.dumps(', '.join(authors))}\n"
     if abstract:
         yaml_header += f"abstract: {json.dumps(str(abstract).strip())}\n"
-    yaml_header += f"date: {date}\n---\n\n"
+    yaml_header += f"date: {date}\n"
+    yaml_header += f"textwidth_mm: {textwidth_mm}\n"
+    yaml_header += f"marginwidth_mm: {marginwidth_mm}\n"
+    yaml_header += "---\n\n"
 
     # Combine header + body
     full_markdown = yaml_header + post.content
 
-    # Write to temp file for pandoc
     import tempfile
     with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False, encoding="utf-8") as tmp:
         tmp.write(full_markdown)
         tmp_path = tmp.name
 
+    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as pdf_tmp:
+        pdf_tmp_path = pdf_tmp.name
+
     try:
-        # Run pandoc
         cmd = [
             "pandoc",
             tmp_path,
@@ -334,16 +376,17 @@ def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
             cmd.append("--lua-filter=" + str(filter_path))
         cmd.extend([
             "--pdf-engine=xelatex",
-            "-o", "-",  # output to stdout
+            "-o", pdf_tmp_path,
         ])
 
         result = subprocess.run(cmd, capture_output=True)
         if result.returncode != 0:
             sys.exit(f"Pandoc failed: {result.stderr.decode('utf-8')}")
 
-        return result.stdout
+        return Path(pdf_tmp_path).read_bytes()
     finally:
         Path(tmp_path).unlink(missing_ok=True)
+        Path(pdf_tmp_path).unlink(missing_ok=True)
 
 
 def render_uploaded_artifacts(md_path: Path, post: frontmatter.Post) -> tuple[bytes, bytes]:

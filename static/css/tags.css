@@ -24,6 +24,26 @@
 }
 
 /*
+  Pills are links. The parent .tag-pills sets pointer-events: none so the
+  card-wide .entry-link overlay stays clickable; re-enable it per pill, which
+  already sits above the overlay via the parent's z-index.
+*/
+a.tag-pill {
+    pointer-events: auto;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+a.tag-pill:hover {
+    filter: brightness(0.94);
+    text-decoration: none;
+}
+
+[data-theme="dark"] a.tag-pill:hover {
+    filter: brightness(1.18);
+}
+
+/*
   Earthy palette — 8 colours, one per hash bucket.
   Light-mode: soft warm backgrounds, dark earthy text.
 */
@@ -59,4 +79,34 @@
 
 .post-meta-tags {
     margin-top: 6px;
+}
+
+/* ─── /tags/ index ──────────────────────────────────────────────────────── */
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.tag-cloud .tag-pill {
+    font-size: 0.95em;
+    padding: 4px 13px;
+}
+
+.tag-count {
+    opacity: 0.65;
+    margin-left: 7px;
+    font-size: 0.85em;
+}
+
+/* ─── Tag page ──────────────────────────────────────────────────────────── */
+
+.tag-page-kind {
+    margin-top: 4px;
+    font-size: 0.78em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.55;
 }

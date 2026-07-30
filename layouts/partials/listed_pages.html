@@ -1,0 +1,30 @@
+{{- /*
+  The canonical set of pages that appear in listings: the front page, the
+  archive and the home RSS feed. Kept in one place so the three can't drift.
+
+  Filters, in order:
+    - section in mainSections. Section, not Type: a Logseq page property named
+      `type` lands in front matter and overrides Hugo's section-derived Type,
+      which silently hid pages from every listing.
+    - `hidden: true` in front matter.
+    - title listed in params.hiddenPages.
+
+  Tag pages need no filtering here — content/tags is outside mainSections.
+
+  Call through partialCached.
+*/ -}}
+{{- $pages := where site.RegularPages "Section" "in" site.Params.mainSections -}}
+{{- $pages = where $pages "Params.hidden" "!=" "true" -}}
+
+{{- $hiddenTitles := slice -}}
+{{- range (site.Params.hiddenPages | default slice) -}}
+  {{- $hiddenTitles = $hiddenTitles | append (. | lower) -}}
+{{- end -}}
+
+{{- $filtered := slice -}}
+{{- range $pages -}}
+  {{- if not (in $hiddenTitles (.Title | lower)) -}}
+    {{- $filtered = $filtered | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- return $filtered -}}

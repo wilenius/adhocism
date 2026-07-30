@@ -1,37 +1,57 @@
+{{- /*
+  Linked references for the current page.
+
+  A page in the `pages` section counts as a backlink when it either
+
+    1. carries the current page's title in its front-matter `tags`, or
+    2. references the current page in its body via one of the forms the
+       Logseq export emits:
+         #[Title]({{< ref "/pages/File" >}})
+         [Title]({{< ref "/pages/File" >}})
+         #Title
+
+  Note: patterns are matched against RawContent, so every interpolated title
+  has to be regex-escaped — titles like "Co-crafting code (a research project)"
+  otherwise turn into patterns with capture groups. And the reference is matched
+  on the *ref target*, never on the bare filename: a bare "id" matches any
+  content containing "sidenotes", "video", "consider" …
+*/ -}}
+
 {{- $currentTitle := .Title -}}
 {{- $currentFile := "" -}}
 {{- with .File }}{{ $currentFile = .BaseFileName }}{{ end -}}
-{{- $backlinks := slice -}}
 
-{{- range where .Site.RegularPages "Type" "pages" -}}
+{{- $rxEscape := `([.\\+*?()|\[\]{}^$])` -}}
+{{- $titleRx := replaceRE $rxEscape `\$1` $currentTitle -}}
+
+{{- /* Body-reference patterns. */ -}}
+{{- $patterns := slice -}}
+{{- $patterns = $patterns | append (printf `#\[%s\]\(` $titleRx) -}}
+{{- $patterns = $patterns | append (printf `\[%s\]\(` $titleRx) -}}
+{{- $patterns = $patterns | append (printf `#%s\b` $titleRx) -}}
+{{- if $currentFile -}}
+  {{- $fileRx := replaceRE $rxEscape `\$1` $currentFile -}}
+  {{- $patterns = $patterns | append (printf `ref\s+"/pages/%s"` $fileRx) -}}
+{{- end -}}
+
+{{- $backlinks := slice -}}
+{{- range where .Site.RegularPages "Section" "pages" -}}
   {{- if eq .Title $currentTitle -}}
     {{- continue -}}
   {{- end -}}
 
   {{- $linked := false -}}
 
-  {{/* Check 1: page has current page's title in its front matter tags */}}
   {{- range .Params.tags -}}
-    {{- if eq (. | lower) ($currentTitle | lower) -}}
+    {{- if and . (eq (. | lower) ($currentTitle | lower)) -}}
       {{- $linked = true -}}
     {{- end -}}
   {{- end -}}
 
-  {{/* Check 2: inline #[title](ref) or #title mention in raw content */}}
   {{- if not $linked -}}
     {{- $rawContent := .RawContent -}}
-    {{- $patterns := slice -}}
-    {{/* Match #[Title](...) and [Title]({{< ref ... >}}) hugo ref links */}}
-    {{- $patterns = $patterns | append (printf `#\[%s\]` $currentTitle) -}}
-    {{- $patterns = $patterns | append (printf `\[%s\]\(` $currentTitle) -}}
-    {{/* Match #Title as a standalone hashtag (case-insensitive not available, try exact) */}}
-    {{- $patterns = $patterns | append (printf `#%s` $currentTitle) -}}
-    {{/* Also match by filename for [[page]] style refs */}}
-    {{- if $currentFile -}}
-      {{- $patterns = $patterns | append $currentFile -}}
-    {{- end -}}
     {{- range $patterns -}}
-      {{- if findRE . $rawContent -}}
+      {{- if findRE . $rawContent 1 -}}
         {{- $linked = true -}}
       {{- end -}}
     {{- end -}}

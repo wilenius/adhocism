@@ -1,5 +1,6 @@
 {{/*
-  Renders tag pills for a page.
+  Renders tag pills for a page. Each pill links to its tag page — either the
+  Logseq page of that name, or the stub generated under content/tags/.
   Params:
     .page     — the Hugo page
     .limit    — 0 = all tags; N = show only first N
@@ -7,11 +8,17 @@
 {{- $page := .page }}
 {{- $limit := .limit | default 0 }}
 
-{{/* Collect frontmatter tags, filtering out empty strings (YAML comment artefacts) */}}
+{{/*
+  Collect frontmatter tags, dropping empty strings (YAML comment artefacts) and
+  malformed blobs — Logseq sometimes exports a whole tag list as one value, e.g.
+  `#{"virkkaus" "fi"}`. scripts/generate_tag_pages.py applies the same filter, so
+  a dropped tag never gets a page either.
+*/}}
+{{- $valid := `^[\p{L}\p{N}][\p{L}\p{N} &'’/+._-]*$` }}
 {{- $rawTags := $page.Params.tags | default slice }}
 {{- $tags := slice }}
 {{- range $rawTags }}
-  {{- if . }}{{- $tags = $tags | append . }}{{- end }}
+  {{- if and . (findRE $valid .) }}{{- $tags = $tags | append . }}{{- end }}
 {{- end }}
 
 {{/* Fallback: first inline #hashtag from raw content when no property tags */}}
@@ -27,11 +34,18 @@
   {{- $tags = first $limit $tags }}
 {{- end }}
 
+{{- $index := partialCached "tag_index.html" . }}
+
 {{- if $tags }}
 <span class="tag-pills">
   {{- range $tags }}
   {{- $colorIndex := mod (index (sha256 .) 0) 8 }}
+  {{- $href := index $index (. | lower) }}
+  {{- if $href }}
+  <a class="tag-pill tag-color-{{ $colorIndex }}" href="{{ $href }}">{{ . }}</a>
+  {{- else }}
   <span class="tag-pill tag-color-{{ $colorIndex }}">{{ . }}</span>
+  {{- end }}
   {{- end }}
 </span>
 {{- end }}

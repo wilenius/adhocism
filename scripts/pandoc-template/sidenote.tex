@@ -1,41 +1,34 @@
 %%
 %% Pandoc + Tufte sidenote template
 %% Renders footnotes as numbered sidenotes, [note: ...] as margin notes
-%% Configurable text:margin ratio via `marginratio` YAML variable (default "4:1")
+%%
+%% Column widths are set by the caller via YAML variables:
+%%   textwidth_mm:   main text column width in mm  (default 130)
+%%   marginwidth_mm: sidenote column width in mm   (default 35)
+%% The script computes these from content length so sidenotes don't overflow.
 %%
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$lang=$lang$,$endif$$if(papersize)$$papersize$,$endif$a4paper]{tufte-handout}
 
-% --- Configurable margin ratio ---
-% Default 4:1 means text width is 4/5 of usable area, margin is 1/5
-% Set via YAML: marginratio: "3:1" etc.
-\makeatletter
-\newcommand{\margintexttotal}{5}  % default denominator
-\newcommand{\margintextnum}{4}     % default numerator
-\ifdefined\usermarginratio
-  \expandafter\parsemarginratio\usermarginratio\relax
-\fi
-\makeatother
-
-% --- A4 geometry with wide right margin ---
-% Tufte-handout already sets asymmetric margins; we adjust text:margin
+% --- A4 geometry: caller controls text/margin split ---
+% Total usable = A4 210mm - left 20mm - right 20mm - sep 5mm = 165mm
 \geometry{
   a4paper,
   left=20mm,
   top=25mm,
   bottom=25mm,
-  textwidth=130mm,            % will be overridden below
+  textwidth=$if(textwidth_mm)$$textwidth_mm$mm$else$130mm$endif$,
   marginparsep=5mm,
-  marginparwidth=35mm
+  marginparwidth=$if(marginwidth_mm)$$marginwidth_mm$mm$else$35mm$endif$
 }
 
-% --- Sidenote / marginnote already use \footnotesize by default in tufte-handout ---
-
-% --- Reroute pandoc footnotes to sidenotes ---
-% Pandoc emits \footnote{...} — we redirect to \sidenote{...}
+% morefloats extends the marginpar queue so packed sidenotes don't error.
+\usepackage{morefloats}
+% Explicitly re-bind \footnote -> \sidenote (tufte-handout does this too, but its
+% \optparams form interacts badly with morefloats at wide margin widths).
 \renewcommand{\footnote}[1]{\sidenote{#1}}
 
-% --- [note: ...] support via Lua filter (see readme) ---
-% Margin notes (unnumbered) are inserted via the filter as \marginnote{...}
+% --- [note: ...] support via Lua filter ---
+% Unnumbered margin notes are inserted by note-filter.lua as \marginnote{...}
 
 % --- Standard pandoc template pieces ---
 $if(highlighting-macros)$
@@ -47,13 +40,13 @@ $header-includes$
 $endfor$
 
 % --- Hyperref ---
-\hypersetup{
-  $if(title)$pdftitle={$title$},$endif$
-  $if(author)$pdfauthor={$author$},$endif$
+\hypersetup{%
+  $if(title)$pdftitle={$title$},$endif$%
+  $if(author)$pdfauthor={$author$},$endif$%
   colorlinks=true,
   linkcolor=$if(linkcolor)$$linkcolor$$else$blue$endif$,
   urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-  citecolor=$if(citecolor)$$citecolor$$else$blue$endif$
+  citecolor=$if(citecolor)$$citecolor$$else$blue$endif$%
 }
 
 $if(csl-refs)$
@@ -90,5 +83,10 @@ $if(toc)$
 $endif$
 
 $body$
+
+% Stretch the main column to fill the last page so any overflow sidenotes
+% on a subsequent page don't appear beside an empty left column.
+\vspace*{\fill}
+\clearpage
 
 \end{document}
