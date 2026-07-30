@@ -5,6 +5,7 @@ tags:
 - ethnography
 - anthropology
 - software development
+- en
 categories: 
 date: 2026-04-22
 lastMod: 2026-07-30

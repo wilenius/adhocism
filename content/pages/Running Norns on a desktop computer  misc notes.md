@@ -3,9 +3,10 @@ title: "Running Norns on a desktop computer – misc notes"
 tags: 
 - norns
 - supercollider
+- en
 categories: 
 date: 2026-06-08
-lastMod: 2026-06-08
+lastMod: 2026-07-30
 ---
 ### Connecting a REPL / editor
 
