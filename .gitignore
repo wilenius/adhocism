@@ -4,6 +4,10 @@
 # Hugo resources directory (for caching)
 /resources/_gen/
 
+# Python bytecode
+__pycache__/
+*.py[cod]
+
 # IDE
 .vscode/
 .idea/

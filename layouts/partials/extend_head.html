@@ -1,3 +1,12 @@
-<link rel="stylesheet" href="/css/citation.css">
-<link rel="stylesheet" href="/css/tufte.css">
-<link rel="stylesheet" href="/css/tags.css">
+{{- /*
+  The site's custom CSS lives in assets/css/extended/, not static/css/.
+
+  PaperMod concatenates everything matching css/extended/*.css into its own
+  stylesheet, then minifies and fingerprints the bundle — so the URL changes
+  whenever the CSS does. Served from static/ instead, the files had stable URLs
+  and a four-hour cache-control, meaning an edit could take hours to reach a
+  browser that had already loaded the old copy.
+
+  Files are numbered to pin the cascade order (citation, tufte, tags);
+  resources.Match sorts by path.
+*/ -}}

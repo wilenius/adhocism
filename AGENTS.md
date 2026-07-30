@@ -18,6 +18,24 @@ just publish    # import + build + commit content changes + push
 `just publish` is the full flow. It only stages `content/pages`, `content/tags`
 and `static/logseq-assets`, so unrelated working-tree changes are left alone.
 
+## Custom CSS lives in `assets/css/extended/`
+
+Not `static/css/`. PaperMod concatenates everything matching `css/extended/*.css`
+into its stylesheet, then minifies and fingerprints the bundle, so the URL
+changes whenever the CSS does.
+
+Served from `static/`, the files had stable URLs and GitHub Pages' four-hour
+`cache-control` — a CSS edit could take hours to reach a browser that had
+already loaded the old copy, which looks exactly like a failed deploy. HTML has
+a 10-minute TTL, so markup changes appear long before styling does.
+
+Files are numbered to pin the cascade order (`10-citation`, `20-tufte`,
+`30-tags`); `resources.Match` sorts by path. `layouts/partials/extend_head.html`
+is intentionally empty apart from a note.
+
+`inline_stylesheets()` in `zenodo_export.py` resolves `href` against `public/`,
+so fingerprinted paths work unchanged.
+
 ## Tags are pages, not taxonomy terms
 
 `taxonomies` is deliberately empty in `config.yml`. A tag behaves the way it does
@@ -168,7 +186,10 @@ and `tufte_transform.py` together. Until then, treat them as a pair.
 
 ### current status
 
-The rendering is broken ATM:
+The rendering is broken ATM. Two distinct failures, both unresolved as of
+2026-07-30 — to be picked up later.
+
+**1. `preview-pdf` — `\MakeTextLowercase` extra `}`**
 
 ```
 just preview-pdf "The three maxims of synthesised ethnography"
@@ -182,4 +203,27 @@ l.173 \clearpage
 
 error: Recipe `preview-pdf` failed on line 48 with exit code 1
 ```
+
+**2. `preview-html` — undefined `\tightlist`**
+
+```
+just preview-html "Tools of the trade"
+uv run scripts/zenodo_export.py --preview-html 'Tools of the trade'
+Pandoc failed: Error producing PDF.
+! Undefined control sequence.
+<recently read> \tightlist
+
+l.111 \tightlist
+
+
+error: recipe `preview-html` failed on line 58 with exit code 1
+```
+
+Two things to note about the second one. It reproduces at HEAD and is unrelated
+to the CSS or tag-page work — `inline_stylesheets()` resolves the fingerprinted
+stylesheet correctly when exercised directly. And the error is odd for an *HTML*
+preview: "Error producing PDF" means the `--preview-html` path is reaching PDF
+rendering at all, which is probably the actual bug. `\tightlist` is a macro
+pandoc emits for compact lists and expects the template to define; check whether
+`sidenote.tex` still provides it.
 
