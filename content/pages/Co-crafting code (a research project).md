@@ -7,7 +7,7 @@ tags:
 - software development
 categories: 
 date: 2026-04-22
-lastMod: 2026-04-22
+lastMod: 2026-07-30
 created: "2026-04-22T07:15"
 type: "project"
 status: "active"
@@ -60,5 +60,7 @@ status: "active"
 
 ## Outputs
 
-+ I'll add research outputs here as they are published.
++ **Wilenius, Heikki** 2026. Code from Nowhere. *Allegra Laboratory*. [https://allegralaboratory.net/code-from-nowhere/](https://allegralaboratory.net/code-from-nowhere/).
+
++ **Wilenius, Heikki** 2026. Synthesised ethnography: partial truths from partial machines. Preprint, in review. [https://doi.org/10.5281/zenodo.20527605](https://doi.org/10.5281/zenodo.20527605).
 
