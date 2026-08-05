@@ -12,7 +12,7 @@
   Call through partialCached — the result is the same for every page.
 */ -}}
 {{- $index := dict -}}
-{{- range $family, $spec := hugo.Data.tag_families.families -}}
+{{- range $family, $spec := site.Data.tag_families.families -}}
   {{- range $spec.tags -}}
     {{- $index = merge $index (dict (. | lower) $family) -}}
   {{- end -}}
