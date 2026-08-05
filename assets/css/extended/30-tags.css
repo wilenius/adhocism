@@ -44,27 +44,49 @@ a.tag-pill:hover {
 }
 
 /*
-  Earthy palette — 8 colours, one per hash bucket.
-  Light-mode: soft warm backgrounds, dark earthy text.
-*/
-.tag-color-0 { background: #e2c09e; color: #6b3319; } /* terracotta    */
-.tag-color-1 { background: #c2d5b8; color: #344f2d; } /* sage          */
-.tag-color-2 { background: #e6d49a; color: #624d18; } /* ochre         */
-.tag-color-3 { background: #d6ab8a; color: #572c15; } /* sienna        */
-.tag-color-4 { background: #b6c8a0; color: #29502e; } /* moss          */
-.tag-color-5 { background: #e8c96a; color: #644c0e; } /* amber         */
-.tag-color-6 { background: #d8bbb0; color: #573425; } /* clay / dusty  */
-.tag-color-7 { background: #b6cada; color: #274a5a; } /* slate / teal  */
+  Family palette — one colour per family in data/tag_families.yml, not per tag.
 
-/* Dark mode — slightly richer, still earthy */
-[data-theme="dark"] .tag-color-0 { background: #7a3c22; color: #f0d5c0; }
-[data-theme="dark"] .tag-color-1 { background: #344e2a; color: #cde0c0; }
-[data-theme="dark"] .tag-color-2 { background: #5e4916; color: #f0e0a8; }
-[data-theme="dark"] .tag-color-3 { background: #5c2f18; color: #e8c8a8; }
-[data-theme="dark"] .tag-color-4 { background: #284e2e; color: #c8deb8; }
-[data-theme="dark"] .tag-color-5 { background: #5e4610; color: #f0daa0; }
-[data-theme="dark"] .tag-color-6 { background: #523224; color: #e0ccc4; }
-[data-theme="dark"] .tag-color-7 { background: #224458; color: #b8d4e4; }
+  Colour groups; the word identifies. Chasing a unique colour per tag does not
+  work: even using the whole sRGB gamut, only ~23 colours are reliably
+  distinguishable side by side as pill backgrounds, and far fewer once they must
+  stay in this site's warm-paper range. Seven families is roughly what a reader
+  can actually learn.
+
+  Hues are spread evenly (24° / 58° / 98° / 142° / 190° / 248°) across a
+  pigment-box range — iron-oxide reds through ochres and earth greens into
+  mineral blues — which runs warm for the human subjects and cool for the
+  machine ones. Chroma is kept moderate so nothing reads as neon. `meta` is
+  deliberately near-neutral taupe: it should recede.
+
+  Every pair clears WCAG AA (6.0:1+ light, 7.9:1+ dark). Adding a family means
+  re-checking separation and contrast, not just picking a colour that looks nice
+  on its own.
+*/
+.tag-family-language    { background: #fdd0cc; color: #703230; } /* dusty rose  24° */
+.tag-family-craft       { background: #fcc69d; color: #6c3803; } /* terracotta  58° */
+.tag-family-sound       { background: #e6d997; color: #544701; } /* ochre       98° */
+.tag-family-scholarship { background: #bddfb9; color: #20551b; } /* moss       142° */
+.tag-family-computing   { background: #ade3df; color: #055350; } /* teal       190° */
+.tag-family-ai          { background: #bedefe; color: #124a78; } /* slate blue 248° */
+.tag-family-meta        { background: #e2dad0; color: #514538; } /* taupe       70° */
+
+[data-theme="dark"] .tag-family-language    { background: #572d2a; color: #facdc9; }
+[data-theme="dark"] .tag-family-craft       { background: #5a2d00; color: #fdceac; }
+[data-theme="dark"] .tag-family-sound       { background: #453a00; color: #e8da98; }
+[data-theme="dark"] .tag-family-scholarship { background: #22441e; color: #c3e4be; }
+[data-theme="dark"] .tag-family-computing   { background: #034441; color: #afe6e1; }
+[data-theme="dark"] .tag-family-ai          { background: #1b3d5c; color: #bdddfd; }
+[data-theme="dark"] .tag-family-meta        { background: #413930; color: #e0d8ce; }
+
+/*
+  A tag with no family in data/tag_families.yml. Renders quietly rather than
+  breaking — `just tag-families` lists these.
+*/
+.tag-family-unassigned {
+    background: transparent;
+    color: var(--secondary);
+    box-shadow: inset 0 0 0 1px var(--border);
+}
 
 /* ─── Card footer: date + pill on same row ──────────────────────────────── */
 
@@ -94,6 +116,14 @@ a.tag-pill:hover {
     font-size: 0.95em;
     padding: 4px 13px;
 }
+
+/*
+  Size by use — the one thing a tag cloud encodes honestly. Four steps only, so
+  the rows stay even; see the $weight tiers in layouts/tags/list.html.
+*/
+.tag-cloud .tag-weight-2 { font-size: 1.08em; }
+.tag-cloud .tag-weight-3 { font-size: 1.24em; padding: 5px 15px; }
+.tag-cloud .tag-weight-4 { font-size: 1.42em; padding: 6px 17px; font-weight: 600; }
 
 .tag-count {
     opacity: 0.65;

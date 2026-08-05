@@ -25,6 +25,27 @@ sync:
 tags:
     uv run scripts/generate_tag_pages.py
 
+# Show tag families and any tag not yet filed under one
+tag-families:
+    uv run scripts/tag_families.py
+
+# File one or more tags under a family. Usage: just tag-family ai LLMops
+tag-family FAMILY *TAGS:
+    uv run scripts/tag_families.py --assign {{FAMILY}} {{TAGS}}
+
+# Which family does a tag belong in? Shows the company it keeps, decides nothing.
+# Usage: just tag-why frontier
+tag-why TAG:
+    uv run scripts/tag_families.py --why {{quote(TAG)}}
+
+# Fail if any tag in use has no family (unassigned tags render neutral)
+tag-families-check:
+    uv run scripts/tag_families.py --check
+
+# Drop tags from data/tag_families.yml that no page uses any more
+tag-families-prune:
+    uv run scripts/tag_families.py --prune
+
 # Pull fresh content from Logseq (export + sync)
 import: export sync
 

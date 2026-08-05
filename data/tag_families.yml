@@ -1,0 +1,79 @@
+# Tag families: the colour of a tag pill comes from the family it belongs to.
+#
+# Colour is a *grouping* signal, not an identity one. Seven families is about the
+# limit of what a reader can learn to recognise, so resist adding many more —
+# add tags to an existing family instead. See assets/css/extended/30-tags.css
+# for the palette; each family name here must have a matching .tag-family-<name>
+# rule there.
+#
+# Tags are matched case-insensitively. A tag missing from this file still
+# renders, in a neutral pill — nothing breaks, it just looks unassigned.
+#
+# One tag, one family — a pill gets one colour, so filing a tag twice is an
+# error rather than a coin flip. For a word that straddles two fields, let the
+# company it keeps decide: `frontier` sits alongside anthropology and economy on
+# Digital Enclosures, so it is scholarship, not the frontier-models sense. If a
+# tag pulls both ways on *different* pages, it is really two tags, and splitting
+# it beats any colour compromise.
+#
+# Maintain with:
+#   just tag-families            # show families + anything unassigned
+#   just tag-why frontier        # evidence for where an ambiguous tag goes
+#   just tag-family ai LLMops    # file a tag under a family
+#   just tag-families-check      # non-zero exit if any tag is unassigned
+
+families:
+
+  scholarship:
+    label: Scholarship
+    tags:
+      - anthropology
+      - economy
+      - ethnography
+      - frontier
+      - history
+      - research
+      - synthesised_ethnography
+
+  ai:
+    label: AI
+    tags:
+      - evaluation
+      - LLMagent
+      - LLMDEV
+      - LLMsecurity
+
+  computing:
+    label: Computing
+    tags:
+      - computing
+      - pandoc
+      - software development
+      - technology
+      - web_development
+      - wordpress
+
+  sound:
+    label: Sound
+    tags:
+      - norns
+      - supercollider
+
+  craft:
+    label: Craft
+    tags:
+      - virkkaus
+
+  language:
+    label: Language
+    tags:
+      - en
+      - fi
+      - id
+
+  meta:
+    label: Meta
+    tags:
+      - DOI
+      - digital garden
+      - meta

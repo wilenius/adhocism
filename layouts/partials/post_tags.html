@@ -35,16 +35,17 @@
 {{- end }}
 
 {{- $index := partialCached "tag_index.html" . }}
+{{- $families := partialCached "tag_family.html" . }}
 
 {{- if $tags }}
 <span class="tag-pills">
   {{- range $tags }}
-  {{- $colorIndex := mod (index (sha256 .) 0) 8 }}
+  {{- $family := index $families (. | lower) | default "unassigned" }}
   {{- $href := index $index (. | lower) }}
   {{- if $href }}
-  <a class="tag-pill tag-color-{{ $colorIndex }}" href="{{ $href }}">{{ . }}</a>
+  <a class="tag-pill tag-family-{{ $family }}" href="{{ $href }}">{{ . }}</a>
   {{- else }}
-  <span class="tag-pill tag-color-{{ $colorIndex }}">{{ . }}</span>
+  <span class="tag-pill tag-family-{{ $family }}">{{ . }}</span>
   {{- end }}
   {{- end }}
 </span>

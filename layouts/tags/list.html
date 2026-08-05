@@ -24,16 +24,21 @@
 {{- end }}
 
 {{- $index := partialCached "tag_index.html" . }}
+{{- $families := partialCached "tag_family.html" . }}
 
 <div class="tag-cloud">
   {{- range $key, $count := $counts }}
   {{- $label := index $labels $key }}
-  {{- $colorIndex := mod (index (sha256 $label) 0) 8 }}
+  {{- $family := index $families $key | default "unassigned" }}
+  {{- /* Size by use, the way a tag cloud is meant to work: 4 steps, so a
+         much-used tag reads as bigger without the row becoming ragged. */ -}}
+  {{- $weight := cond (ge $count 12) 4 (cond (ge $count 6) 3 (cond (ge $count 3) 2 1)) }}
+  {{- $class := printf "tag-pill tag-family-%s tag-weight-%d" $family $weight }}
   {{- $href := index $index $key }}
   {{- if $href }}
-  <a class="tag-pill tag-color-{{ $colorIndex }}" href="{{ $href }}">{{ $label }}<span class="tag-count">{{ $count }}</span></a>
+  <a class="{{ $class }}" href="{{ $href }}">{{ $label }}<span class="tag-count">{{ $count }}</span></a>
   {{- else }}
-  <span class="tag-pill tag-color-{{ $colorIndex }}">{{ $label }}<span class="tag-count">{{ $count }}</span></span>
+  <span class="{{ $class }}">{{ $label }}<span class="tag-count">{{ $count }}</span></span>
   {{- end }}
   {{- end }}
 </div>

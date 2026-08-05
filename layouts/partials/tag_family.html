@@ -1,0 +1,20 @@
+{{- /*
+  Builds a lookup of tag name (lowercased) -> family name, inverted from
+  data/tag_families.yml.
+
+  The data file is keyed by family because that is the way it is maintained by
+  hand (and by scripts/tag_families.py) — one entry per family, tags listed
+  underneath. Rendering needs the opposite direction, so invert once and cache.
+
+  A tag with no family is simply absent from the returned dict; callers fall
+  back to the neutral `.tag-family-unassigned` pill.
+
+  Call through partialCached — the result is the same for every page.
+*/ -}}
+{{- $index := dict -}}
+{{- range $family, $spec := hugo.Data.tag_families.families -}}
+  {{- range $spec.tags -}}
+    {{- $index = merge $index (dict (. | lower) $family) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $index -}}
