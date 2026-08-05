@@ -1,6 +1,8 @@
 ---
 title: "Running WordPress Locally with WP-CLI"
 tags: 
+- wordpress
+- web_development
 categories: 
 date: 2026-05-07
 lastMod: 2026-05-07
