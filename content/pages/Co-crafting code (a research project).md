@@ -7,9 +7,8 @@ tags:
 - software development
 - en
 categories: 
-date: 2026-04-30
+date: 2026-04-22
 lastMod: 2026-04-30
-created: "2026-04-22T07:15"
 type: "project"
 status: "active"
 ---
