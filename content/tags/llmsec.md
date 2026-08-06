@@ -1,5 +1,5 @@
 ---
-title: "digital garden"
+title: "LLMsec"
 searchHidden: true
 generated: true
 ---

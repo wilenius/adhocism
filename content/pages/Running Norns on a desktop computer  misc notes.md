@@ -5,8 +5,8 @@ tags:
 - supercollider
 - en
 categories: 
-date: 2026-06-08
-lastMod: 2026-07-30
+date: 2026-08-06
+lastMod: 2026-08-06
 ---
 ### Connecting a REPL / editor
 
