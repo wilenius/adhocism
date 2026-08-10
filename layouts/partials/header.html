@@ -1,4 +1,7 @@
-<header class="header">
+{{- /* On the home page the site name is carried by the masthead in the content
+       column (see list.html), so the header wordmark is hidden there to avoid
+       two competing titles. */ -}}
+<header class="header{{ if .IsHome }} header-home{{ end }}">
     <nav class="nav">
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}

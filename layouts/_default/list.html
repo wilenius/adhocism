@@ -51,8 +51,11 @@
 
 {{- if and .IsHome (eq $paginator.PageNumber 1) }}
 {{- with site.GetPage "/pages/My digital garden" }}
+<header class="masthead">
+  <h1 class="masthead-title">{{ site.Title }}</h1>
+  <p class="masthead-tagline">{{ .Title }}</p>
+</header>
 <div class="post-content home-intro">
-  <h2>{{ .Title }}</h2>
   {{ .Content }}
 </div>
 {{- end }}

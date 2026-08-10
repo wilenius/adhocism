@@ -29,9 +29,12 @@ body {
         "Book Antiqua", Georgia, serif;
 }
 
-/* Widen PaperMod's main container to make room for the margin */
+/* Widen PaperMod's main container to make room for the margin.
+   The nav has its own width variable; keep it equal to the main width so the
+   header lines up with the content column instead of indenting past it. */
 :root {
     --main-width: 1100px;
+    --nav-width: 1100px;
 }
 
 /* Tufte-style layout: content area with right margin for notes */
@@ -138,6 +141,39 @@ label.margin-toggle:not(.sidenote-number) {
 
 /* --- Homepage layout --- */
 
+/* Home page: the wordmark moves into the masthead below, so the header keeps
+   only its utility controls. The link is hidden, not removed, so the theme
+   toggle and social icons stay where they are on every other page. */
+.header-home .logo > a {
+    display: none;
+}
+
+/* Inner pages: the wordmark is chrome, not a heading. Dropping the weight and
+   opening the tracking keeps it from competing with the bold page title. */
+.logo a {
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* Masthead: site name as the page's one title, description as its subtitle */
+.masthead {
+    margin-bottom: calc(var(--gap) * 1.5);
+}
+
+.masthead-title {
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.masthead-tagline {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--secondary);
+    margin: 0.2rem 0 0;
+}
+
 /* Social icons in header */
 .logo-switches .social-icons {
     display: inline-flex;
@@ -211,10 +247,19 @@ label.margin-toggle:not(.sidenote-number) {
 @media (max-width: 760px) {
     :root {
         --main-width: 720px;
+        --nav-width: 720px;
     }
 
     .post-content {
         max-width: 100%;
+    }
+
+    .masthead-title {
+        font-size: 2.25rem;
+    }
+
+    .masthead-tagline {
+        font-size: 1.15rem;
     }
 
     label.margin-toggle:not(.sidenote-number) {
