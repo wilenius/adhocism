@@ -36,6 +36,38 @@ is intentionally empty apart from a note.
 `inline_stylesheets()` in `zenodo_export.py` resolves `href` against `public/`,
 so fingerprinted paths work unchanged.
 
+## Block references become links when the target is public
+
+A Logseq block reference (`((uuid))`, or `[label](((uuid)))`) is replaced in
+place by the referenced block's text, and that text is wrapped in a
+`{{< ref "/pages/…" >}}` link when the referenced block is part of the export.
+This lives in `parse-block-refs` / `graph/get-ref-block` in the
+`logseq-to-markdown` fork, not in this repo.
+
+A block counts as exported when it carries `public:: true`, when an ancestor
+does (a public block takes its whole subtree along), or when it sits on a
+public page. `graph/exported-block?` walks `:block/parent` upwards to decide;
+Logseq makes the page entity the parent of a top-level block, so one walk
+covers all three cases. The link points at the *page* the block lives on —
+for a public block inside a private journal that is the journal's own file
+(`/pages/Aug 6th, 2026`), which is where the exporter puts it. There are no
+per-block anchors.
+
+Two consequences worth knowing:
+
+- **A reference to a non-public block still leaves its text behind.** That is
+  what Logseq shows the author in the editor, so the published sentence reads
+  the way it was written — but the first line of a private block does end up
+  on a public page. Nothing warns about this.
+- The link is a normal `ref`, so `backlinks.html` picks it up and the target
+  page gains a "Linked references" entry for free.
+
+Previously the whole bullet was replaced by the referenced block's content:
+`(cf. ((781cbff2…)))` inside a sentence published as just "Salami Attack", the
+rest of the sentence gone. `re-find` located the first reference and then
+`s/replace` was applied to the referenced content rather than to the block
+being rendered.
+
 ## Tags are pages, not taxonomy terms
 
 `taxonomies` is deliberately empty in `config.yml`. A tag behaves the way it does
