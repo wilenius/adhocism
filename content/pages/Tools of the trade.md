@@ -5,6 +5,7 @@ tags:
 - technology
 - research
 - DOI
+- en
 categories: 
 date: 2025-12-17
 lastMod: 2026-05-07

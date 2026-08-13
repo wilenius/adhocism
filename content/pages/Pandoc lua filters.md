@@ -2,6 +2,7 @@
 title: "Pandoc lua filters"
 tags: 
 - pandoc
+- en
 categories: 
 date: 2025-11-13
 lastMod: 2025-11-13
