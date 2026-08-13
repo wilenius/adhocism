@@ -92,6 +92,42 @@ archive, the RSS feed and the search index without needing a `hidden` flag.
 Adding a public Logseq page named after an existing tag is enough to upgrade it:
 the generator drops its stub on the next sync and pills follow.
 
+### Language tags write to the graph, not to content/pages
+
+```
+just language-tags        # pages with no en/fi/id tag, then offer to fill them
+just language-tags-check  # report only, non-zero exit if any lack one
+```
+
+`scripts/language_tags.py` reports from `content/pages` — that is what actually
+got published — but writes to the Logseq graph, because `sync-exports.sh`
+mirrors the export over `content/pages` with `rsync --delete`. A tag added on
+the Hugo side would survive exactly until the next `just import`.
+
+Pressing Enter at the prompt tags every listed page `en`, which is nearly always
+the right answer; a subset can be picked by number, and `--lang fi` changes the
+language. Pages that exist to back a tag (`en`, `fi`, `id`, `meta`) are left out
+of the report — the same rule `generate_tag_pages.py` uses to decide a tag needs
+no stub — along with `front_page`.
+
+**Tags live wherever `public:: true` lives.** That is the one rule worth
+remembering, and it is why the script looks for the public property block rather
+than assuming a position in the file. Usually it is the pre-block at the top of
+`pages/Foo.md`, but not always: `Running WordPress Locally with WP-CLI` keeps
+`public::` and `tags::` on its first bullet, so a `tags::` added to the top of
+that file would be a second list the exporter never reads. The same rule finds
+the block in a journal, where a page is really one public bullet inside
+`journals/2026_08_13.md` — Hugo names such a page after the date and titles it
+from the block, which is how the two are matched back up. Spelling varies in the
+graph (`Public::  true` occurs), so the property name is matched case-insensitively.
+
+**The export reads Logseq's index, not the markdown.** `logseq-to-markdown`
+loads `~/.logseq/graphs/*.transit`, a dump of Logseq's own database. Editing a
+file on disk therefore does not reach Hugo until Logseq notices and rewrites
+that index. The script compares mtimes and says so when the index is older than
+the edits it just made; without that, `just import` would quietly export the old
+tags and look as though the tagging had failed.
+
 ### Two bugs this replaced
 
 **Pages silently missing from every listing.** Listings filtered on Hugo's

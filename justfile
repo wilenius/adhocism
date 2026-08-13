@@ -46,6 +46,22 @@ tag-families-check:
 tag-families-prune:
     uv run scripts/tag_families.py --prune
 
+# Pages with no en/fi/id tag, then offer to fill them — Enter tags them all #en.
+# Edits the Logseq graph, so run `just import` afterwards to publish the tags.
+# Takes the script's flags: `just language-tags --lang fi` to pick a language.
+
+# List pages carrying no language tag and offer to fill them in (Enter = all #en)
+language-tags *ARGS:
+    uv run scripts/language_tags.py {{ARGS}}
+
+# Tag a single page by title. Usage: just language-tag fi "Joustavat hihansuut"
+language-tag LANG PAGE:
+    uv run scripts/language_tags.py --lang {{LANG}} --pages {{quote(PAGE)}}
+
+# Fail if any page is missing a language tag (reports, never writes)
+language-tags-check:
+    uv run scripts/language_tags.py --check
+
 # Pull fresh content from Logseq (export + sync)
 import: export sync
 
