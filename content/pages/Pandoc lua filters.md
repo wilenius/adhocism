@@ -3,8 +3,9 @@ title: "Pandoc lua filters"
 tags: 
 - pandoc
 categories: 
-date: 2025-11-19
-lastMod: 2025-11-19
+date: 2025-11-13
+lastMod: 2025-11-13
+lastmod: #{"2025-11-19"}
 ---
 https://codeberg.org/tarleb/querverweis
 

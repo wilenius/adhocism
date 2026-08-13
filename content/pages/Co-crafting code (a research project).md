@@ -8,9 +8,11 @@ tags:
 - en
 categories: 
 date: 2026-04-22
-lastMod: 2026-04-30
+lastMod: 2026-07-30
+created: "2026-04-22T07:15"
 type: "project"
 status: "active"
+lastmod: #{"2026-04-30"}
 ---
 '**Co-crafting code: Changing nature of work at the intersection of programmers and artificial intelligence**' is my ongoing research project, funded by the Finnish Cultural Foundation (2025–2027).
 
