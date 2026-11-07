@@ -7,9 +7,8 @@ tags:
 - meta
 - digital garden
 categories: 
-date: 2025-08-25
-lastMod: 2026-03-04
-lastmod: #{"2025-11-21"}
+date: 2025-11-19
+lastMod: 2025-11-21
 ---
 This is a [digital garden](https://joelhooks.com/digital-garden), collection of resources and writings by [Heikki](https://www.iki.fi/hw/). Everything is licensed under CC BY-NC 4.0. Citation information can be found on every page.
 

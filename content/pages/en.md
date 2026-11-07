@@ -2,7 +2,6 @@
 title: "en"
 tags: 
 categories: 
-date: 2025-08-25
-lastMod: 2025-11-13
-lastmod: #{"2024-09-12"}
+date: 2024-09-12
+lastMod: 2024-09-12
 ---

@@ -7,9 +7,8 @@ tags:
 - economy
 - en
 categories: 
-date: 2025-12-17
-lastMod: 2026-04-22
-lastmod: #{"2026-04-19"}
+date: 2025-11-21
+lastMod: 2026-04-19
 ---
 Also known as: vendor lock-in.
 

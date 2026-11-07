@@ -7,10 +7,9 @@ tags:
 - anthropology
 - DOI
 categories: 
-date: 2026-04-16
-lastMod: 2026-05-07
+date: 2026-04-22
+lastMod: 2026-04-22
 abstract: "Argues for sustainable GenAI use in ethnographic practice."
-lastmod: #{"2026-04-22"}
 ---
 ## 1. Whenever possible, use open models. If not possible, appropriate the capabilities of the proprietary model by training your model with it.
 
