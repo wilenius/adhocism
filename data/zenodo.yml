@@ -1,4 +1,12 @@
 pages:
+  Agent Skills for Ethnographic Analysis:
+    concept_doi: 10.5281/zenodo.24040717
+    concept_recid: '24040717'
+    content_hash: 17652767deb26fe3b3d1f8cc3a2e252ffe6662e6eacf972ee5fc4b6f3810981c
+    latest_doi: 10.5281/zenodo.24040718
+    latest_recid: 24040718
+    published_at: true
+    title: Agent Skills for Ethnographic Analysis
   The three maxims of synthesised ethnography:
     concept_doi: 10.5281/zenodo.20070979
     concept_recid: '20070979'
