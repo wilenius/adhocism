@@ -2,6 +2,8 @@
   The canonical set of pages that appear in listings: the front page, the
   archive and the home RSS feed. Kept in one place so the three can't drift.
 
+  Sorted by .Lastmod, newest first.
+
   Filters, in order:
     - section in mainSections. Section, not Type: a Logseq page property named
       `type` lands in front matter and overrides Hugo's section-derived Type,
@@ -27,4 +29,6 @@
     {{- $filtered = $filtered | append . -}}
   {{- end -}}
 {{- end -}}
-{{- return $filtered -}}
+{{- /* Newest edit first: .Date is the publication date, so Hugo's default
+       order would no longer bump an edited page to the top. */ -}}
+{{- return sort $filtered "Lastmod" "desc" -}}

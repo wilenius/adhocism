@@ -68,6 +68,40 @@ rest of the sentence gone. `re-find` located the first reference and then
 `s/replace` was applied to the referenced content rather than to the block
 being rendered.
 
+## Dates: published from Logseq, modified from git
+
+Every page carries two dates, and they come from different places:
+
+- `date:` — when the page was published. The exporter takes it from a
+  `date::` (or `created::`) page property, then a journal's own day, and only
+  then from Logseq's created-at, which for a long-lived draft is far too early.
+- `lastMod:` — when the page's published text last changed.
+  `scripts/stamp_lastmod.py` overwrites whatever the exporter wrote, from this
+  repo's git history. It runs from `sync-exports.sh` after the rsync.
+
+`config.yml` maps them to `.Date` and `.Lastmod`. Listings sort by `.Lastmod`
+(`listed_pages.html`), so an edit still bumps a page to the top of the front
+page and the feed, and `post_meta.html` shows "DATE (modified DATE)".
+
+**Why not Logseq's `updated-at`:** it lives only in Logseq's index, and a graph
+re-index resets it for every page at once — six pages, a 2024 journal among
+them, still claim to have been created on 2025-08-25 for that reason. Pinning
+it with `lastMod::` properties freezes pages instead.
+
+**Why not Hugo's `enableGitInfo`:** it uses the last commit that touched a file
+at all, so a change in front matter or in exporter output bumps every page.
+The script compares *bodies* — everything below the front matter — and takes
+the earliest commit in which the page had its current body. It reads both
+sides of every publish merge, because pages are published from more than one
+machine and often reach `main` days after they were committed. Per-file
+`git log --follow` proved unreliable on this history. Pages unchanged since
+the pipeline arrived (2025-11-13, the first commit of `sync-exports.sh`) keep
+the earliest date already known, committed or exported.
+
+Known limits: a change in how the exporter renders a body counts as an edit of
+every affected page, and a renamed page counts as new. `--check` reports
+pages whose date would change without writing.
+
 ## Tags are pages, not taxonomy terms
 
 `taxonomies` is deliberately empty in `config.yml`. A tag behaves the way it does

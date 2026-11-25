@@ -1,11 +1,14 @@
 {{- $scratch := newScratch }}
 
+{{- /* Published date, then "(modified …)" when the text has changed since,
+       on another day. */ -}}
 {{- if not .Date.IsZero -}}
-{{- $scratch.Add "meta" (slice (printf "<span title='%s'>%s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- $format := default ":date_long" site.Params.DateFormat }}
+{{- $dates := printf "<span title='%s'>%s</span>" (.Date) (.Date | time.Format $format) }}
+{{- if and (not .Lastmod.IsZero) (gt (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02")) -}}
+{{- $dates = printf "%s <span class='modified' title='%s'>(modified %s)</span>" $dates (.Lastmod) (.Lastmod | time.Format $format) }}
 {{- end }}
-
-{{- if and (not .Lastmod.IsZero) (ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02")) -}}
-{{- $scratch.Add "meta" (slice (printf "<span title='%s'>updated %s</span>" (.Lastmod) (.Lastmod | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- $scratch.Add "meta" (slice $dates) }}
 {{- end }}
 
 {{- if (.Param "ShowReadingTime") -}}

@@ -26,8 +26,14 @@ outputs:
         - RSS
         - JSON # is necessary
 
+# .Date is when a page was published (a date:: property in Logseq), .Lastmod
+# when its published text last changed (stamped from git history by
+# scripts/stamp_lastmod.py). Listings sort by .Lastmod, so an edit still bumps
+# a page to the top — see layouts/partials/listed_pages.html.
 frontmatter:
     date:
+        - date
+    lastmod:
         - lastMod
         - date
 

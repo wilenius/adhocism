@@ -41,6 +41,13 @@ if [ -d "$ASSETS_DIR" ]; then
     echo ""
 fi
 
+# Date each page by when its published body last changed, from this repo's
+# git history. Must run after the rsync above, which rewrites lastMod: from
+# Logseq's database on every import.
+echo "Stamping lastMod from git history..."
+uv run "$(dirname "$0")/scripts/stamp_lastmod.py" 2>&1 | sed 's/^/  /'
+echo ""
+
 # Regenerate tag pages. Must run after the rsync above: content/pages is
 # mirrored with --delete, so tag pages live in content/tags instead.
 echo "Generating tag pages..."
