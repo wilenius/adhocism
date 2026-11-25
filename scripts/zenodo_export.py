@@ -331,6 +331,22 @@ def _compute_layout_widths(post: frontmatter.Post) -> tuple[int, int]:
     return textwidth, marginwidth
 
 
+SITE_URL = "https://adhocism.net"
+HUGO_REF = re.compile(r'\{\{<\s*ref\s+"(/pages/[^"]+)"\s*>\}\}')
+
+
+def resolve_hugo_refs(markdown: str) -> str:
+    """Replace Hugo `{{< ref "/pages/X" >}}` shortcodes with absolute site URLs.
+
+    pandoc sees the raw markdown, where the shortcode is literal text — and,
+    containing spaces, it is not even parsed as a link target.
+    """
+    def slug(m: re.Match) -> str:
+        path = m.group(1).lower().replace(" ", "-")
+        return SITE_URL + re.sub(r"[^a-z0-9/_\-]", "", path) + "/"
+    return HUGO_REF.sub(slug, markdown)
+
+
 def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
     """Render markdown to PDF using pandoc with Tufte-style sidenote template.
 
@@ -359,7 +375,7 @@ def render_pdf_from_markdown(md_path: Path, post: frontmatter.Post) -> bytes:
     yaml_header += "---\n\n"
 
     # Combine header + body
-    full_markdown = yaml_header + post.content
+    full_markdown = yaml_header + resolve_hugo_refs(post.content)
 
     import tempfile
     with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False, encoding="utf-8") as tmp:

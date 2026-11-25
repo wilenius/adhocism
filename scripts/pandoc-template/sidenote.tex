@@ -7,7 +7,7 @@
 %%   marginwidth_mm: sidenote column width in mm   (default 35)
 %% The script computes these from content length so sidenotes don't overflow.
 %%
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$lang=$lang$,$endif$$if(papersize)$$papersize$,$endif$a4paper]{tufte-handout}
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$lang=$lang$,$endif$$if(papersize)$$papersize$,$endif$a4paper,nofonts]{tufte-handout}
 
 % --- A4 geometry: caller controls text/margin split ---
 % Total usable = A4 210mm - left 20mm - right 20mm - sep 5mm = 165mm
@@ -21,26 +21,103 @@
   marginparwidth=$if(marginwidth_mm)$$marginwidth_mm$mm$else$35mm$endif$
 }
 
+% --- Typefaces ---
+% ETbb is the TeX Live packaging of ET Book, the face the live site uses.
+\usepackage{fontspec}
+\setmainfont{ETbb}[
+  Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Bold, BoldItalicFont=*-BoldItalic,
+  Numbers=OldStyle]
+\newfontfamily\liningfigures{ETbb}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Bold, Numbers=Lining]
+% Letterspaced small caps for labels and section heads. fontspec spaces the
+% glyphs itself, so this avoids soul's \so (see the \smallcaps note below).
+\newfontfamily\spacedsc{ETbb}[
+  Extension=.otf, UprightFont=*-Regular, BoldFont=*-Bold,
+  Letters=SmallCaps, LetterSpace=6, Numbers=OldStyle]
+\setmonofont{FiraMono}[
+  Extension=.otf, UprightFont=*-Regular, BoldFont=*-Medium, Scale=0.8]
+
+% --- Colour ---
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{1A1A1A}
+\definecolor{muted}{HTML}{6B6259}
+\definecolor{accent}{HTML}{124A78}   % slate blue, the site's "ai" tag hue
+\definecolor{rule}{HTML}{CFC8BF}
+\color{ink}
+
 % morefloats extends the marginpar queue so packed sidenotes don't error.
 \usepackage{morefloats}
 % Explicitly re-bind \footnote -> \sidenote (tufte-handout does this too, but its
 % \optparams form interacts badly with morefloats at wide margin widths).
 \renewcommand{\footnote}[1]{\sidenote{#1}}
 
+% --- Paragraphs: block style, as on the site ---
+% Indented paragraphs collided with run-in labels ("Question:", "Example
+% request:") and with paragraphs that follow lists, so the left edge wandered.
+% tufte re-applies its own values through \@tufte@reset@par (and ragged2e's
+% own parindent lengths), so redefine that rather than setting them once.
+\makeatletter
+\renewcommand{\@tufte@reset@par}{%
+  \setlength{\RaggedRightParindent}{0pt}%
+  \setlength{\JustifyingParindent}{0pt}%
+  \setlength{\parindent}{0pt}%
+  \setlength{\parskip}{0.6\baselineskip plus 2pt minus 1pt}%
+}
+\@tufte@reset@par
+\makeatother
+
+% --- Headings ---
+% tufte-common sets headings with titlesec; restyle them.
+%   \section       (## in the page)  letterspaced small caps under a hairline
+%   \subsection    (###)             upright, larger; " – " splits off an
+%                                    italic gloss on its own line (note-filter.lua)
+%   \subsubsection (####)            italic run-in
+% The hairline and the title share one box so a page break can't part them.
+\newcommand{\sectionhead}[1]{\parbox[t]{\textwidth}{%
+  {\color{rule}\rule{\textwidth}{0.4pt}}\par\vspace{1.1ex}%
+  {\color{muted}\spacedsc\large\MakeLowercase{#1}}}}
+\titleformat{\section}[block]
+  {\normalfont}
+  {}{0pt}
+  {\sectionhead}
+\titlespacing*{\section}{0pt}{3.2ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+\titleformat{\subsection}[block]
+  {\normalfont\Large\bfseries\color{ink}}
+  {}{0pt}
+  {}
+\titlespacing*{\subsection}{0pt}{3ex plus .8ex minus .2ex}{0.6ex plus .2ex}
+\newcommand{\headinggloss}[1]{\par\vspace{0.3ex}{\normalfont\large\itshape\color{muted}#1}}
+
+\makeatletter
 % tufte-handout deliberately makes \subsubsection an error. Headings deeper
 % than two levels still occur, so render them as small italic headings.
-\makeatletter
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
   {-2ex \@plus -0.5ex \@minus -.2ex}{0.5ex \@plus .2ex}{\normalfont\itshape}}
 \makeatother
 
+% Run-in label for paragraphs that open with "**Label:**" (note-filter.lua).
+\newcommand{\runinlabel}[1]{{\spacedsc\color{accent}\MakeLowercase{#1}}\hspace{0.6em}}
+
+% --- Lists ---
+% Bullets hang inside the text column instead of poking into the left margin.
+\usepackage{enumitem}
+\setlist{leftmargin=1.3em, itemsep=0.35\baselineskip, parsep=0pt,
+  topsep=0.3\baselineskip, partopsep=0pt}
+\setlist[itemize,1]{label={\color{muted}\textbullet}}
+\setlist[itemize,2]{label={\color{muted}\textendash}}
+
 % tufte wraps \smallcaps/\allcaps (used in the running head from page 2 on) in
 % soul's \so letterspacing. Current LaTeX kernels implement \MakeTextLowercase
 % via expl3 case changing, which \so cannot scan: "Argument of
-% \MakeTextLowercase has an extra }" at the first page break. Drop the
-% letterspacing; the class sets these up at \begin{document}, so override after.
+% \MakeTextLowercase has an extra }" at the first page break. Use fontspec's
+% letterspacing instead; the class sets these up at \begin{document}, so
+% override after.
 \AtBeginDocument{%
-  \renewcommand{\smallcaps}[1]{{\scshape\MakeLowercase{#1}}}%
+  \renewcommand{\smallcaps}[1]{{\spacedsc\MakeLowercase{#1}}}%
   \renewcommand{\allcaps}[1]{{\MakeUppercase{#1}}}%
 }
 
@@ -65,9 +142,9 @@ $endfor$
   $if(title)$pdftitle={$title$},$endif$%
   $if(author)$pdfauthor={$author$},$endif$%
   colorlinks=true,
-  linkcolor=$if(linkcolor)$$linkcolor$$else$blue$endif$,
-  urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-  citecolor=$if(citecolor)$$citecolor$$else$blue$endif$%
+  linkcolor=$if(linkcolor)$$linkcolor$$else$accent$endif$,
+  urlcolor=$if(urlcolor)$$urlcolor$$else$accent$endif$,
+  citecolor=$if(citecolor)$$citecolor$$else$accent$endif$%
 }
 
 $if(csl-refs)$
@@ -86,17 +163,32 @@ $if(subtitle)$\subtitle{$subtitle$}$endif$
 \author{$for(author)$$author$$sep$ \and $endfor$}
 $if(date)$\date{$date$}$endif$
 
+% --- Title block ---
+% Replaces tufte's all-italic stack (title, author, date, then an indented
+% abstract) with one block: title, abstract as a standfirst, byline, hairline.
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000%
+  {\fontsize{24}{28}\selectfont\color{ink}\@title\par}%
+  $if(subtitle)$\vspace{1.2ex}{\Large\itshape\color{muted}$subtitle$\par}$endif$%
+  $if(abstract)$\vspace{1.4ex}{\large\itshape\color{muted}$abstract$\par}$endif$%
+  \vspace{2.2ex}%
+  {\spacedsc\color{muted}\MakeLowercase{\@author}%
+   $if(date)$\hspace{0.8em}\textperiodcentered\hspace{0.8em}{\liningfigures\@date}$endif$\par}%
+  \vspace{1.6ex}%
+  {\color{rule}\rule{\textwidth}{0.4pt}\par}%
+  \vspace{2.4ex}%
+  \endgroup
+  \thispagestyle{plain}%
+}
+\makeatother
+
 \begin{document}
 
 $if(title)$
 \maketitle
-$endif$
-
-$if(abstract)$
-\begin{abstract}
-\noindent
-$abstract$
-\end{abstract}
 $endif$
 
 $if(toc)$
