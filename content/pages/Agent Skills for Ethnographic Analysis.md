@@ -10,17 +10,17 @@ tags:
 - install
 categories: 
 date: 2026-11-10
-lastMod: 2026-11-10
+lastMod: 2026-11-25
 abstract: "A catalogue of agent skills for anthropologists"
-lastmod: #{"2026-11-07"}
+lastmod: #{"2026-11-25"}
 ---
-**Version 0.1 – a working catalogue**
+**Version 0.2 – a working catalogue**
 
 These are agent skills and tools I use and develop around ethnographic analysis: finding literature, organising research materials, following digital fieldsites, and creating novel analytic perspectives. They support the work anthropological work around interpretation. Some of them have more general scientific uses too.
 
 The skills are split into two categories: deterministic and heuristic. Deterministic skills can be used by both humans and AI harnesses with identical results. Heuristic skills require either AI inference or human judgement. So, "agent" here means any entity with tool-using and inferential capabilities.
 
-All of the tools listed here are in private use in my own research workflows, at different stages of development and testing. **litreview and ScholarFocus are already publicly available as experimental releases.** The remaining entries are previews: I will release them once they have been tested enough and their documentation and configuration are ready for use beyond my own setup. There is no release timetable yet.
+All of the tools listed here are in private use in my own research workflows, at different stages of development and testing. **litreview, ScholarFocus and fieldnotes-search are already publicly available as experimental releases.** The remaining entries are previews: I will release them once they have been tested enough and their documentation and configuration are ready for use beyond my own setup. There is no release timetable yet.
 
 Here, a *skill* means instructions an agent can follow, often accompanied by scripts. Some entries are broader workflows. For example, Researchwall is currently a standalone script, and I'm not yet sure if this useful (to me) experiment makes sense to publish as a reusable package.
 
@@ -56,9 +56,25 @@ A bibliographic profile is not an account of someone’s intellectual life. For 
 
 + Skill type: deterministic (but upstream sources use machine classification)
 
+### fieldnotes-search – searching multilingual field notes
+
+**Question:** Where have I written about this topic, even if I used another language or a vernacular term?
+
+fieldnotes-search (`fns`) searches local field notes using keywords and multilingual semantic similarity. It reads Word, LibreOffice, RTF, HTML, PDF, Markdown and plain-text files, splits them into entries, and combines retrieval with a researcher-maintained glossary linking search terms to local words and spelling variants. After the initial model download, processing and search run on your own computer.
+
+**Example request:** “Find passages where a politician uses Javanese honorifics when addressing their constituency”
+
+Semantic matches are starting points for rereading, not evidence that passages mean the same thing. Check results in their original context; glossary choices and the multilingual model shape what is retrieved.
+
++ [Skill instructions and supporting files](https://github.com/wilenius/fieldnotes-search/tree/main).
+
++ Skill type: deterministic retrieval workflow (uses machine-learned multilingual embeddings).
+
 ### Getting the skills
 
-Both skills live in one [GitHub repository under wilenius](https://github.com/wilenius/scholarfocus-skill), because they share the same `scholarlib` command-line package. The repository includes a Claude Code marketplace/plugin; other compatible agents can use the individual skill directories. The command-line package and the skill files are installed separately: see the [installation instructions](https://github.com/wilenius/scholarfocus-skill#install).
+litreview and ScholarFocus live in one [GitHub repository under wilenius](https://github.com/wilenius/scholarfocus-skill), because they share the same `scholarlib` command-line package. The repository includes a Claude Code marketplace/plugin; other compatible agents can use the individual skill directories. The command-line package and the skill files are installed separately: see the [installation instructions](https://github.com/wilenius/scholarfocus-skill#install).
+
+fieldnotes-search has its own [GitHub repository](https://github.com/wilenius/fieldnotes-search/tree/main), with [installation instructions](https://github.com/wilenius/fieldnotes-search#install) for the command-line tool and a [SKILL.md](https://github.com/wilenius/fieldnotes-search/blob/main/SKILL.md) for agents.
 
 Future releases will be grouped by shared code and dependencies, rather than creating a repository for every instruction file. The catalogue here will link to each release.
 
