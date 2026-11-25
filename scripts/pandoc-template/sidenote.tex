@@ -27,6 +27,27 @@
 % \optparams form interacts badly with morefloats at wide margin widths).
 \renewcommand{\footnote}[1]{\sidenote{#1}}
 
+% tufte-handout deliberately makes \subsubsection an error. Headings deeper
+% than two levels still occur, so render them as small italic headings.
+\makeatletter
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {-2ex \@plus -0.5ex \@minus -.2ex}{0.5ex \@plus .2ex}{\normalfont\itshape}}
+\makeatother
+
+% tufte wraps \smallcaps/\allcaps (used in the running head from page 2 on) in
+% soul's \so letterspacing. Current LaTeX kernels implement \MakeTextLowercase
+% via expl3 case changing, which \so cannot scan: "Argument of
+% \MakeTextLowercase has an extra }" at the first page break. Drop the
+% letterspacing; the class sets these up at \begin{document}, so override after.
+\AtBeginDocument{%
+  \renewcommand{\smallcaps}[1]{{\scshape\MakeLowercase{#1}}}%
+  \renewcommand{\allcaps}[1]{{\MakeUppercase{#1}}}%
+}
+
+% pandoc emits \tightlist for compact lists and expects the template to define it.
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 % --- [note: ...] support via Lua filter ---
 % Unnumbered margin notes are inserted by note-filter.lua as \marginnote{...}
 

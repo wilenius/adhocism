@@ -60,3 +60,25 @@ function Inlines(inlines)
   end
   return result
 end
+
+-- Promote headings so the shallowest one becomes \section. Pages put their
+-- title in front matter and start body headings at ##, which pandoc would map
+-- to \subsection, pushing ### to \subsubsection — undefined in tufte-handout.
+function Pandoc(doc)
+  local min_level = nil
+  doc.blocks:walk({
+    Header = function(h)
+      if not min_level or h.level < min_level then min_level = h.level end
+    end
+  })
+  if min_level and min_level > 1 then
+    local shift = min_level - 1
+    doc.blocks = doc.blocks:walk({
+      Header = function(h)
+        h.level = h.level - shift
+        return h
+      end
+    })
+  end
+  return doc
+end

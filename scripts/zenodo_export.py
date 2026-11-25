@@ -24,7 +24,10 @@ Pages are identified by tag 'DOI' in their frontmatter. The script:
   - creates and publishes a new Zenodo deposition for tagged pages with no
     state entry yet,
   - skips pages whose body hash matches the last published version,
-  - with --update, cuts a new Zenodo version for pages whose body changed.
+  - with --update, cuts a new Zenodo version for pages whose body changed,
+  - resumes any draft left `pending` by a run that died between reserving
+    the DOI and publishing (the state is saved first so the build can embed
+    the DOI).
 
 The uploaded artifact is the page's rendered HTML from public/pages/<slug>/.
 """
@@ -461,12 +464,39 @@ def main() -> None:
         existing = pages_state.get(md.stem)
         if existing is None:
             plan.append(("create", md, post, body, h))
+        elif existing.get("pending"):
+            # A previous run reserved a draft but died before publishing it.
+            plan.append(("resume", md, post, body, h))
         elif existing.get("content_hash") == h:
             plan.append(("skip", md, post, body, h))
         elif args.update:
             plan.append(("new_version", md, post, body, h))
         else:
             plan.append(("changed", md, post, body, h))
+
+    def finish(md, post, meta, version_recid, bucket):
+        """Build, upload and publish a reserved draft, then clear its pending flag.
+
+        The DOI and hash are saved before this runs so the build can embed the
+        DOI; `pending` stays set until the publish succeeds, so a crash here is
+        resumed by the next run instead of being mistaken for "unchanged".
+        """
+        hugo_build()
+        replace_files(base, token, version_recid)
+        update_metadata(base, token, version_recid, meta)
+        html_bytes, pdf_bytes = render_uploaded_artifacts(md, post)
+        upload_bytes(bucket, html_bytes, safe_filename(meta["title"]), token)
+        upload_bytes(bucket, pdf_bytes, safe_filename(meta["title"], ext="pdf"), token)
+        published = publish_deposition(base, token, version_recid)
+        entry = pages_state[md.stem]
+        actual_doi = published.get("doi") or entry["latest_doi"]
+        if actual_doi != entry["latest_doi"]:
+            print(f"          WARN: minted DOI {actual_doi} differs from reserved {entry['latest_doi']}")
+            entry["latest_doi"] = actual_doi
+        entry["published_at"] = published.get("submitted") or published.get("created")
+        entry.pop("pending", None)
+        save_state(sp, state)
+        print(f"          Published: {actual_doi}")
 
     for action, md, post, body, h in plan:
         label = f"  {md.name}"
@@ -481,8 +511,6 @@ def main() -> None:
             continue
 
         meta = build_metadata(post, body, fallback_title=md.stem)
-        upload_name = safe_filename(meta["title"])
-        pdf_upload_name = safe_filename(meta["title"], ext="pdf")
 
         if action == "create":
             print(f"[create]  {label}")
@@ -502,23 +530,11 @@ def main() -> None:
                 "latest_recid": version_recid,
                 "latest_doi": version_doi,
                 "content_hash": h,
+                "pending": True,
             }
             save_state(sp, state)
             print(f"          Reserved: {version_doi} (concept: {concept_doi}); rebuilding to embed.")
-            hugo_build()
-            html_bytes, pdf_bytes = render_uploaded_artifacts(md, post)
-            upload_bytes(dep["links"]["bucket"], html_bytes, upload_name, token)
-            upload_bytes(dep["links"]["bucket"], pdf_bytes, pdf_upload_name, token)
-            published = publish_deposition(base, token, version_recid)
-            actual_doi = published.get("doi") or version_doi
-            if actual_doi != version_doi:
-                print(f"          WARN: minted DOI {actual_doi} differs from reserved {version_doi}")
-                pages_state[md.stem]["latest_doi"] = actual_doi
-            pages_state[md.stem]["published_at"] = (
-                published.get("submitted") or published.get("created")
-            )
-            save_state(sp, state)
-            print(f"          Published: {actual_doi}")
+            finish(md, post, meta, version_recid, dep["links"]["bucket"])
         elif action == "new_version":
             print(f"[update]  {label}")
             prev = pages_state[md.stem]
@@ -530,24 +546,25 @@ def main() -> None:
             pages_state[md.stem]["latest_recid"] = version_recid
             pages_state[md.stem]["latest_doi"] = version_doi
             pages_state[md.stem]["content_hash"] = h
+            pages_state[md.stem]["pending"] = True
             save_state(sp, state)
             print(f"          Reserved: {version_doi} (concept: {prev.get('concept_doi')}); rebuilding to embed.")
-            hugo_build()
-            replace_files(base, token, version_recid)
-            update_metadata(base, token, version_recid, meta)
-            html_bytes, pdf_bytes = render_uploaded_artifacts(md, post)
-            upload_bytes(draft["links"]["bucket"], html_bytes, upload_name, token)
-            upload_bytes(draft["links"]["bucket"], pdf_bytes, pdf_upload_name, token)
-            published = publish_deposition(base, token, version_recid)
-            actual_doi = published.get("doi") or version_doi
-            if actual_doi != version_doi:
-                print(f"          WARN: minted DOI {actual_doi} differs from reserved {version_doi}")
-                pages_state[md.stem]["latest_doi"] = actual_doi
-            pages_state[md.stem]["published_at"] = (
-                published.get("submitted") or published.get("created")
-            )
+            finish(md, post, meta, version_recid, draft["links"]["bucket"])
+        elif action == "resume":
+            prev = pages_state[md.stem]
+            version_recid = prev["latest_recid"]
+            print(f"[resume]  {label} — finishing reserved draft {prev['latest_doi']}")
+            draft = zen("GET", f"{base}/deposit/depositions/{version_recid}", token)
+            if draft.get("submitted"):
+                print("          Already published on Zenodo; recording it.")
+                prev.pop("pending", None)
+                prev["published_at"] = draft.get("submitted_at") or draft.get("created")
+                save_state(sp, state)
+                continue
+            prev["title"] = meta["title"]
+            prev["content_hash"] = h
             save_state(sp, state)
-            print(f"          Published: {actual_doi}")
+            finish(md, post, meta, version_recid, draft["links"]["bucket"])
 
     print(f"\nState in {sp.relative_to(REPO_ROOT)}")
 

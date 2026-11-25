@@ -286,46 +286,20 @@ The long-term fix is to move the transform into a Hugo render hook so
 there is a single source of truth — that would let us delete `tufte.js`
 and `tufte_transform.py` together. Until then, treat them as a pair.
 
-### current status
+### Template fixes (2026-11-25)
 
-The rendering is broken ATM. Two distinct failures, both unresolved as of
-2026-07-30 — to be picked up later.
+Three LaTeX failures, all fixed in `sidenote.tex` / `note-filter.lua`:
 
-**1. `preview-pdf` — `\MakeTextLowercase` extra `}`**
-
-```
-just preview-pdf "The three maxims of synthesised ethnography"
-uv run scripts/zenodo_export.py --preview-pdf 'The three maxims of synthesised ethnography'
-Pandoc failed: Error producing PDF.
-! Argument of \MakeTextLowercase  has an extra }.
-<inserted text>
-                \par
-l.173 \clearpage
-
-
-error: Recipe `preview-pdf` failed on line 48 with exit code 1
-```
-
-**2. `preview-html` — undefined `\tightlist`**
-
-```
-just preview-html "Tools of the trade"
-uv run scripts/zenodo_export.py --preview-html 'Tools of the trade'
-Pandoc failed: Error producing PDF.
-! Undefined control sequence.
-<recently read> \tightlist
-
-l.111 \tightlist
-
-
-error: recipe `preview-html` failed on line 58 with exit code 1
-```
-
-Two things to note about the second one. It reproduces at HEAD and is unrelated
-to the CSS or tag-page work — `inline_stylesheets()` resolves the fingerprinted
-stylesheet correctly when exercised directly. And the error is odd for an *HTML*
-preview: "Error producing PDF" means the `--preview-html` path is reaching PDF
-rendering at all, which is probably the actual bug. `\tightlist` is a macro
-pandoc emits for compact lists and expects the template to define; check whether
-`sidenote.tex` still provides it.
-
+- **`\subsubsection` undefined by tufte-handout.** Body headings start at `##`
+  (the title lives in front matter), so pandoc mapped `##`→`\subsection` and
+  `###`→`\subsubsection`, which tufte-handout makes an error. `note-filter.lua`
+  now promotes headings so the shallowest becomes `\section`, and the template
+  defines a fallback `\subsubsection` for anything deeper.
+- **`Argument of \MakeTextLowercase has an extra }` at `\clearpage`.** Not
+  content-related: the running head (page 2 onwards) uses `\smallcaps`, which
+  tufte wraps in soul's `\so`; current LaTeX kernels implement case changing in
+  expl3, which `\so` cannot scan. The template redefines `\smallcaps`/`\allcaps`
+  without letterspacing `\AtBeginDocument`. This is likely also what the
+  "80 mm crashes" row in the column-width table was.
+- **Undefined `\tightlist`.** pandoc emits it for compact lists and expects the
+  template to define it; the custom template didn't.
