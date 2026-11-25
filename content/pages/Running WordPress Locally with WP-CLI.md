@@ -6,8 +6,7 @@ tags:
 - en
 categories: 
 date: 2026-05-07
-lastMod: 2026-05-07
-lastmod: #{"2026-05-07"}
+lastMod: 2026-06-11
 ---
 Running WordPress Locally with WP-CLI
 

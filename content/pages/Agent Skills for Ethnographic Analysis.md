@@ -9,10 +9,9 @@ tags:
 - DOI
 - install
 categories: 
-date: 2026-11-10
+date: 2026-11-07
 lastMod: 2026-11-25
 abstract: "A catalogue of agent skills for anthropologists"
-lastmod: #{"2026-11-25"}
 ---
 **Version 0.2 – a working catalogue**
 

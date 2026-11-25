@@ -8,8 +8,7 @@ tags:
 - en
 categories: 
 date: 2026-10-06
-lastMod: 2026-10-06
-lastmod: #{"2026-10-06"}
+lastMod: 2026-11-07
 ---
 Yesterday we had a reading circle discussion about the book *How Transparency Works*. Rodolfo, a colleague who had read Nethra Samarawickrema’s chapter on the Indian Ocean sapphire trade, mentioned a fascinating example of the transparency/opacity dynamic: bargaining under a handkerchief.[^1]
 
